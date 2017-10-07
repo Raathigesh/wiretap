@@ -1,0 +1,17 @@
+{
+  "devDependencies": {},
+  "name": "mobx-inspect",
+  "version": "0.1.0",
+  "main": "index.js",
+  "author": "Raathigeshan Kugarajan <raathigesh92@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "backpack-core": "^0.4.2",
+    "mobx": "^3.3.0",
+    "shortid": "^2.2.8",
+    "socket.io-client": "^2.0.3"
+  },
+  "scripts": {
+    "dev": "backpack"
+  }
+}

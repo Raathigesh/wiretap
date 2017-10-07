@@ -1,0 +1,8 @@
+{
+	"devDependencies": {
+		"lerna": "^2.2.0"
+	},
+	"main": "index.js",
+	"author": "Raathigeshan Kugarajan <raathigesh92@gmail.com>",
+	"license": "MIT"
+}
