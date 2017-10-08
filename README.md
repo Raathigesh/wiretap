@@ -21,10 +21,10 @@ yarn add mobx-wiretap
 ### Initialize wiretap and start inspecting
 ```javascript
 import {observable} from "mobx";
-import { wiretap, inspect, log } from "mobx-inspect";
+import { wiretap, inspect, log } from "mobx-wiretap";
 
 // This initializes the connection with the dashboard.
-// You have to invoke this before any other methods from mobx-inspect
+// You have to invoke this before any other methods from mobx-wiretap
 // Pass any name as the app name
 wiretap("My awesome app");
 
