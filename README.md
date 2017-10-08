@@ -5,7 +5,7 @@
 
 # Work in progress. App is coming soon.
 
-Monitor (Wiretap) your mobx observables and update observables from the dashboard. Inspired by [Reactotron](https://github.com/infinitered/reactotron).
+Monitor (Wiretap) and update your mobx observables. A dope way to debug your app. Inspired by [Reactotron](https://github.com/infinitered/reactotron).
 
 ## Features
 - Monitor observables
