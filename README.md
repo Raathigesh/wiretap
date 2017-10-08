@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./docs/wiretap.png" alt="Atmo" height="200">
+  <img src="./docs/wiretap.png" alt="Wiretap" height="200">
   <h3 align="center">Mock data for your prototypes and demos</h3>
 </div>
 
