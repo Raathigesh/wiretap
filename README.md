@@ -1,9 +1,9 @@
 <div align="center">
   <img src="./docs/wiretap.png" alt="Wiretap" height="200">
-  <h3 align="center">Mock data for your prototypes and demos</h3>
+  <h3 align="center">Stare into the soul of your observables</h3>
 </div>
 
-Monitor (Wiretap) your mobx observables and also allows to update your observables from the dashboard. Inspired by [Reactotron](https://github.com/infinitered/reactotron) which focus mainly on Redux.
+Monitor (Wiretap) your mobx observables and update observables from the dashboard. Inspired by [Reactotron](https://github.com/infinitered/reactotron).
 
 ## Features
 - Monitor observables
