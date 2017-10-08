@@ -1,11 +1,14 @@
 import { observable, extendObservable, computed, action } from "mobx";
 import io from "socket.io-client";
+import moment from "moment";
 const socket = io("http://localhost:4000/");
 
 class Trackers {
   constructor() {
+    this.spyTraces = observable([]);
     this.connectionInfo = observable({
-      port: null
+      port: null,
+      app: ""
     });
     this.currrentTrackerId = observable({
       id: 0
@@ -29,21 +32,28 @@ class Trackers {
       this.addTracker(tracker);
     });
 
-    socket.on("reset", payload => {
-      console.log("Reset ", payload);
+    socket.on("initialize", payload => {
+      console.log("initialize ", payload);
       this.reset(payload);
+    });
+
+    socket.on("spy", payload => {
+      this.spyTraces.push(payload);
     });
   }
 
-  reset() {
+  reset(info) {
     this.trackers.clear();
+    this.connectionInfo.app = info.app;
   }
 
   addTracker(tracker) {
     const itemToUpdate = this.trackers.find(item => item.id === tracker.id);
     if (itemToUpdate) {
+      itemToUpdate.updatedOn = moment();
       itemToUpdate.value = tracker.value;
     } else {
+      tracker.updatedOn = moment();
       this.trackers.push(tracker);
     }
   }

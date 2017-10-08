@@ -1,17 +1,23 @@
 {
-  "devDependencies": {},
-  "name": "mobx-inspect",
+  "name": "mobx-wiretap",
   "version": "0.1.0",
-  "main": "index.js",
+  "main": "./build/main.js",
   "author": "Raathigeshan Kugarajan <raathigesh92@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "backpack-core": "^0.4.2",
-    "mobx": "^3.3.0",
+    "lodash.isstring": "^4.0.1",
     "shortid": "^2.2.8",
-    "socket.io-client": "^2.0.3"
+    "socket.io-client": "^2.0.3",
+    "mobx": "^3.3.0"
+  },
+  "devDependencies": {
+    "backpack-core": "^0.4.2"
+  },
+  "peerDependencies": {
+    "mobx": "^3.3.0"
   },
   "scripts": {
-    "dev": "backpack"
+    "dev": "backpack",
+    "build": "backpack build"
   }
 }

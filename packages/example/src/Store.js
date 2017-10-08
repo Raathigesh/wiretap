@@ -3,11 +3,14 @@ import {
   computed,
   extendObservable,
   action,
-  useStrict
+  useStrict,
+  extras
 } from "mobx";
-import { wiretap, inspect } from "mobx-inspect";
 
-wiretap();
+import { wiretap, inspect, log } from "mobx-inspect";
+
+extras.shareGlobalState();
+wiretap("Sample app");
 
 class Store {
   constructor() {
@@ -46,4 +49,9 @@ inspect("Todos", store.todos);
 setTimeout(() => {
   store.tick();
 }, 3000);
+log("customLog", {
+  Name: 22323
+});
+
+log("two", "Whats up");
 export default store;
