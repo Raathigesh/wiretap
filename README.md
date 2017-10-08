@@ -3,6 +3,8 @@
   <h3 align="center">Stare into the soul of your observables</h3>
 </div>
 
+# Work in progress. App is coming soon.
+
 Monitor (Wiretap) your mobx observables and update observables from the dashboard. Inspired by [Reactotron](https://github.com/infinitered/reactotron).
 
 ## Features
