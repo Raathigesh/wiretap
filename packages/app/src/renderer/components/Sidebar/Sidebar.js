@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import Loader from "./Loader";
 import { observer } from "mobx-react";
-import { UpdaterStatus } from "../store/Updater";
+import Footer from "./Footer";
 
 const SidebarContainer = styled.div`background-color: #f7f7ff;`;
 
@@ -11,12 +11,6 @@ const Menus = styled.ul`
   background-color: #f7f7ff;
 `;
 
-const UpdateButton = styled.button`
-  padding-left: 0px;
-  font-size: 12px;
-`;
-const PortLabel = styled.div`margin-bottom: 5px;`;
-const UpdateLabel = styled.span`font-size: 12px;`;
 const Divider = styled.li`
   &:after {
     background-color: #f7f7ff !important;
@@ -25,14 +19,20 @@ const Divider = styled.li`
 
 class Sidebar extends Component {
   render() {
-    const { trackers, setTrackerId, connectionInfo, updater } = this.props;
+    const {
+      trackers,
+      setTrackerId,
+      connectionInfo,
+      updater,
+      currrentTrackerId
+    } = this.props;
     const observableTrackers = trackers.filter(tracker => tracker.isObservable);
     const logTrackers = trackers.filter(tracker => !tracker.isObservable);
     return (
       <SidebarContainer className="panel">
         <div className="panel-header text-center">
           <img
-            src={require("../assets/wiretap.png")}
+            src={require("../../assets/wiretap.png")}
             alt="Avatar XL"
             width="50"
           />
@@ -47,6 +47,7 @@ class Sidebar extends Component {
               <Divider className="divider" data-content="Observables" />
             )}
             {observableTrackers.map(tracker => {
+              const isActive = tracker.id === currrentTrackerId;
               return (
                 <li
                   className="menu-item"
@@ -54,7 +55,9 @@ class Sidebar extends Component {
                     setTrackerId(tracker.id);
                   }}
                 >
-                  <a href="#menus">{tracker.name}</a>
+                  <a href="#menus" className={isActive ? "active" : ""}>
+                    {tracker.name}
+                  </a>
                 </li>
               );
             })}
@@ -63,6 +66,7 @@ class Sidebar extends Component {
               <Divider className="divider" data-content="Logs" />
             )}
             {logTrackers.map(tracker => {
+              const isActive = tracker.id === currrentTrackerId;
               return (
                 <li
                   className="menu-item"
@@ -70,53 +74,15 @@ class Sidebar extends Component {
                     setTrackerId(tracker.id);
                   }}
                 >
-                  <a href="#menus">{tracker.name}</a>
+                  <a href="#menus" className={isActive ? "active" : ""}>
+                    {tracker.name}
+                  </a>
                 </li>
               );
             })}
           </Menus>
         </div>
-        <div className="panel-footer">
-          {connectionInfo.app && (
-            <span>
-              <span className="text-primary">
-                <Loader app={connectionInfo.app} />
-              </span>
-            </span>
-          )}
-          <div className="divider" />
-          <PortLabel>Listening on port {connectionInfo.port}</PortLabel>
-          <div>Version {updater.currentVersion}</div>
-          <div>
-            {updater.updateStatus === UpdaterStatus.NoUpdate && (
-              <UpdateButton
-                className="btn btn-link"
-                onClick={updater.checkForUpdate}
-              >
-                Check for update
-              </UpdateButton>
-            )}
-            {updater.updateStatus === UpdaterStatus.CheckingUpdate && (
-              <UpdateLabel>Checking for update</UpdateLabel>
-            )}
-
-            {updater.updateStatus ===
-              UpdaterStatus.UpdateAvailableForDownload && (
-              <UpdateButton
-                className="btn btn-link"
-                onClick={updater.downloadUpdate}
-              >
-                Download and Install
-              </UpdateButton>
-            )}
-            {updater.updateStatus === UpdaterStatus.DownloadingUpdate && (
-              <UpdateLabel>Downloading update</UpdateLabel>
-            )}
-            {updater.updateStatus === UpdaterStatus.InstallingUpdate && (
-              <UpdateLabel>Installing update</UpdateLabel>
-            )}
-          </div>
-        </div>
+        <Footer connectionInfo={connectionInfo} updater={updater} />
       </SidebarContainer>
     );
   }

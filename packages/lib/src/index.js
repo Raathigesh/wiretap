@@ -5,7 +5,8 @@ import {
   isObservableArray,
   runInAction,
   spy,
-  extras
+  extras,
+  whyRun
 } from "mobx";
 import initializeWalkieTalkie, {
   emitChange,
@@ -84,12 +85,13 @@ function handleObservableObject(name, observableObject) {
   const id = shortid.generate();
   globalTrackingState[id] = observableObject;
   // observe the observable for futre updates
-  observe(observableObject, () => {
+  observe(observableObject, change => {
     emitChange({
       id,
       name,
       value: observableObject,
-      isObservable: true
+      isObservable: true,
+      changeDescription: {}
     });
   });
 

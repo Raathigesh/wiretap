@@ -1,29 +1,27 @@
 import { observable, extendObservable, computed, action } from "mobx";
 import io from "socket.io-client";
 import moment from "moment";
+import Tracker from "./Tracker";
 const socket = io("http://localhost:4000/");
 
 class Trackers {
   constructor() {
-    this.spyTraces = observable([]);
-    this.connectionInfo = observable({
-      port: null,
-      app: ""
-    });
-    this.currrentTrackerId = observable({
-      id: 0
-    });
-    this.trackers = observable([]);
     extendObservable(this, {
+      connectionInfo: {
+        port: null,
+        app: ""
+      },
+      currrentTrackerId: 0,
+      trackers: [],
       currentTracker: computed(() => {
-        return this.trackers.find(
-          item => item.id === this.currrentTrackerId.id
-        );
+        return this.trackers.find(item => item.id === this.currrentTrackerId);
       }),
       setCurrentTrackerId: id => {
-        this.currrentTrackerId.id = id;
+        this.currrentTrackerId = id;
       }
     });
+
+    // events from the sync server
     socket.on("connected", info => {
       this.connectionInfo.port = info.port;
     });
@@ -31,12 +29,10 @@ class Trackers {
       console.log("Change ", tracker);
       this.addTracker(tracker);
     });
-
     socket.on("initialize", payload => {
       console.log("initialize ", payload);
       this.reset(payload);
     });
-
     socket.on("spy", payload => {
       this.spyTraces.push(payload);
     });
@@ -47,19 +43,29 @@ class Trackers {
     this.connectionInfo.app = info.app;
   }
 
-  addTracker(tracker) {
-    const itemToUpdate = this.trackers.find(item => item.id === tracker.id);
+  addTracker(payload) {
+    const itemToUpdate = this.trackers.find(item => item.id === payload.id);
     if (itemToUpdate) {
-      itemToUpdate.updatedOn = moment();
-      itemToUpdate.value = tracker.value;
+      itemToUpdate.setUpdatedTime(moment());
+      itemToUpdate.addActions(itemToUpdate.actions);
+      itemToUpdate.setValue(payload.value);
+      itemToUpdate.addTrace(payload.changeDescription);
     } else {
-      tracker.updatedOn = moment();
+      const tracker = new Tracker(payload.id, payload.name);
+      tracker.setUpdatedTime(moment());
+      tracker.addActions(payload.actions);
+      tracker.setValue(payload.value);
+      tracker.addTrace(payload.changeDescription);
       this.trackers.push(tracker);
+    }
+
+    if (this.currrentTrackerId === 0) {
+      this.currrentTrackerId = this.trackers[0].id;
     }
   }
 
   update(payload) {
-    payload.trackerId = this.currrentTrackerId.id;
+    payload.trackerId = this.currrentTrackerId;
     socket.emit("update", payload);
   }
 }

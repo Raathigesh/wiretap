@@ -6,10 +6,11 @@ import { toJS } from "mobx";
 import isString from "lodash.isstring";
 import ObjectView from "./components/ObjectView";
 import Frame from "./components/Frame";
-import Sidebar from "./components/Sidebar";
+import Sidebar from "./components/Sidebar/Sidebar";
 import Content from "./components/Content";
 import EmptyContent from "./components/EmptyContent";
-import SpyContent from "./components/Spy";
+import SpyContent from "./components/Traces/Spy";
+import ExecutionPanel from "./components/ExecutionPanel";
 
 import "./styles/global.css";
 import "./styles/loader.css";
@@ -28,49 +29,58 @@ const MainCotent = styled.div`
   flex-grow: 1;
 `;
 
-class App extends Component {
-  constructor() {
-    super();
-    this.state = {};
-  }
+const Wrapper = styled.div`
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+`;
 
+class App extends Component {
   render() {
+    const {
+      currrentTrackerId,
+      trackers,
+      setCurrentTrackerId,
+      connectionInfo,
+      currentTracker,
+      update
+    } = state;
+
+    const isValueAString = currentTracker && isString(currentTracker.value);
     return (
       <AppContainer>
         <Sidebar
-          trackers={state.trackers}
-          setTrackerId={state.setCurrentTrackerId}
-          connectionInfo={state.connectionInfo}
+          currrentTrackerId={currrentTrackerId}
+          trackers={trackers}
+          setTrackerId={setCurrentTrackerId}
+          connectionInfo={connectionInfo}
           updater={updater}
         />
-        <MainCotent>
-          {state.currentTracker && (
-            <Content
-              name={state.currentTracker.name}
-              updatedOn={state.currentTracker.updatedOn}
-            >
-              {isString(toJS(state.currentTracker.value)) && (
-                <kbd>{toJS(state.currentTracker.value)}</kbd>
-              )}
-              {!isString(toJS(state.currentTracker.value)) && (
-                <ObjectView
-                  name={state.currentTracker.name}
-                  data={
-                    state.currentTracker && toJS(state.currentTracker.value)
-                  }
-                  update={payload => {
-                    state.update(payload);
-                  }}
-                  isEditable={state.currentTracker.isObservable}
-                />
-              )}
-            </Content>
-          )}
-          {!state.currentTracker && <EmptyContent />}
-          {state.spyTraces.length > 0 && (
-            <SpyContent spyTrace={state.spyTraces} />
-          )}
-        </MainCotent>
+        <Wrapper>
+          <MainCotent>
+            {currentTracker && (
+              <Content
+                name={currentTracker.name}
+                updatedOn={currentTracker.updatedOn}
+              >
+                {isValueAString && <kbd>{currentTracker.value}</kbd>}
+                {!isValueAString && (
+                  <ObjectView
+                    name={currentTracker.name}
+                    data={currentTracker && toJS(currentTracker.value)}
+                    update={payload => {
+                      update(payload);
+                    }}
+                    isEditable={currentTracker.isObservable}
+                  />
+                )}
+              </Content>
+            )}
+            {!currentTracker && <EmptyContent />}
+            {currentTracker && <SpyContent spyTrace={currentTracker.traces} />}
+          </MainCotent>
+          {currentTracker && <ExecutionPanel tracker={currentTracker} />}
+        </Wrapper>
       </AppContainer>
     );
   }
