@@ -46,10 +46,11 @@ class Sidebar extends Component {
             {observableTrackers.length > 0 && (
               <Divider className="divider" data-content="Observables" />
             )}
-            {observableTrackers.map(tracker => {
+            {observableTrackers.map((tracker, index) => {
               const isActive = tracker.id === currrentTrackerId;
               return (
                 <li
+                  key={index}
                   className="menu-item"
                   onClick={() => {
                     setTrackerId(tracker.id);
@@ -65,10 +66,11 @@ class Sidebar extends Component {
             {logTrackers.length > 0 && (
               <Divider className="divider" data-content="Logs" />
             )}
-            {logTrackers.map(tracker => {
+            {logTrackers.map((tracker, index) => {
               const isActive = tracker.id === currrentTrackerId;
               return (
                 <li
+                  key={index}
                   className="menu-item"
                   onClick={() => {
                     setTrackerId(tracker.id);

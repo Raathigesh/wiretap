@@ -40,7 +40,7 @@ class Updater {
       autoUpdater.quitAndInstall();
       this.updateStatus = UpdaterStatus.InstallingUpdate;
     });
-    autoUpdater.checkForUpdates();
+    // autoUpdater.checkForUpdates();
   }
 
   checkForUpdate() {

@@ -3,9 +3,11 @@ import styled from "styled-components";
 import TimeAgo from "react-timeago";
 
 const ContentContainer = styled.div`
+  position: relative;
   display: flex;
   flex-grow: 1;
   overflow-y: auto;
+  height: 100%;
 `;
 
 export default function Content({ spyTrace, name, updatedOn, children }) {

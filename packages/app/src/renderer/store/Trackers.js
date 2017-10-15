@@ -13,11 +13,23 @@ class Trackers {
       },
       currrentTrackerId: 0,
       trackers: [],
+      isRecording: false,
+      currentRecordingId: 0,
       currentTracker: computed(() => {
         return this.trackers.find(item => item.id === this.currrentTrackerId);
       }),
       setCurrentTrackerId: id => {
         this.currrentTrackerId = id;
+      },
+      stopRecording: trackerId => {
+        socket.emit("stopRecording", {
+          id: trackerId,
+          recordingId: this.currentRecordingId
+        });
+      },
+      update: payload => {
+        payload.trackerId = this.currrentTrackerId;
+        socket.emit("update", payload);
       }
     });
 
@@ -26,15 +38,36 @@ class Trackers {
       this.connectionInfo.port = info.port;
     });
     socket.on("change", tracker => {
-      console.log("Change ", tracker);
       this.addTracker(tracker);
     });
     socket.on("initialize", payload => {
-      console.log("initialize ", payload);
       this.reset(payload);
     });
-    socket.on("spy", payload => {
-      this.spyTraces.push(payload);
+
+    socket.on("action", payload => {
+      const itemToUpdate = this.trackers.find(item => item.id === payload.id);
+      itemToUpdate.addActionLog(payload.value, payload.action);
+    });
+
+    socket.on("snapshot", payload => {
+      const itemToUpdate = this.trackers.find(item => item.id === payload.id);
+      itemToUpdate.addSnapshot(payload.value, payload.snapshot);
+    });
+
+    socket.on("patch", payload => {
+      const itemToUpdate = this.trackers.find(item => item.id === payload.id);
+      itemToUpdate.addPatch(payload.value, payload.patch);
+    });
+
+    socket.on("recordingStart", ({ recordingId }) => {
+      this.isRecording = true;
+      this.currentRecordingId = recordingId;
+    });
+
+    socket.on("recordingEnd", payload => {
+      this.isRecording = false;
+      const tracker = this.getTracker(payload.id);
+      tracker.addRecording(payload.recordingId);
     });
   }
 
@@ -44,18 +77,31 @@ class Trackers {
   }
 
   addTracker(payload) {
-    const itemToUpdate = this.trackers.find(item => item.id === payload.id);
-    if (itemToUpdate) {
-      itemToUpdate.setUpdatedTime(moment());
-      itemToUpdate.addActions(itemToUpdate.actions);
-      itemToUpdate.setValue(payload.value);
-      itemToUpdate.addTrace(payload.changeDescription);
+    let nodeType = 2;
+    if (payload.isStateTree) {
+      nodeType = 1;
+    } else if (payload.isMobx) {
+      nodeType = 0;
+    }
+
+    if (nodeType === 0) {
+      const mobxTracker = this.trackers.find(item => item.id === payload.id);
+      if (mobxTracker) {
+        mobxTracker.setUpdatedTime(moment());
+        mobxTracker.setValue(payload.value);
+        mobxTracker.addObserveLog(payload.value, payload.action);
+      } else {
+        const tracker = new Tracker(payload.id, payload.name, nodeType);
+        tracker.setUpdatedTime(moment());
+        tracker.addActions(payload.actions);
+        tracker.setValue(payload.value);
+        this.trackers.push(tracker);
+      }
     } else {
-      const tracker = new Tracker(payload.id, payload.name);
+      const tracker = new Tracker(payload.id, payload.name, nodeType);
       tracker.setUpdatedTime(moment());
       tracker.addActions(payload.actions);
       tracker.setValue(payload.value);
-      tracker.addTrace(payload.changeDescription);
       this.trackers.push(tracker);
     }
 
@@ -64,9 +110,43 @@ class Trackers {
     }
   }
 
-  update(payload) {
-    payload.trackerId = this.currrentTrackerId;
-    socket.emit("update", payload);
+  getTracker(id) {
+    return this.trackers.find(tracker => tracker.id === id);
+  }
+
+  executeAction(id, name, args) {
+    socket.emit("executeAction", {
+      id,
+      name,
+      args
+    });
+  }
+
+  applySnapshot(trackerId, snapshot) {
+    socket.emit("applySnapshot", {
+      trackerId,
+      value: snapshot
+    });
+  }
+
+  applyPatch(trackerId, patch) {
+    socket.emit("applyPatch", {
+      trackerId,
+      value: patch
+    });
+  }
+
+  startRecording(trackerId) {
+    socket.emit("startRecording", {
+      id: trackerId
+    });
+  }
+
+  playRecording(trackerId, recordingId) {
+    socket.emit("playRecording", {
+      id: trackerId,
+      recordingId
+    });
   }
 }
 

@@ -16,24 +16,29 @@ export default function initializeServer() {
         version: app.getVersion()
       });
 
-      client.on("change", function(data) {
-        console.log("message: " + data);
-        client.broadcast.emit("change", data);
-      });
-
-      client.on("update", function(data) {
-        client.broadcast.emit("update", data);
-      });
-
-      client.on("initialize", function(data) {
-        client.broadcast.emit("initialize", data);
-      });
-
-      client.on("spy", function(data) {
-        client.broadcast.emit("spy", data);
-      });
+      relayMessage("change", client);
+      relayMessage("update", client);
+      relayMessage("initialize", client);
+      relayMessage("executeAction", client);
+      relayMessage("applySnapshot", client);
+      relayMessage("applyPatch", client);
+      relayMessage("action", client);
+      relayMessage("snapshot", client);
+      relayMessage("patch", client);
+      relayMessage("observe", client);
+      relayMessage("recordingStart", client);
+      relayMessage("recordingEnd", client);
+      relayMessage("startRecording", client);
+      relayMessage("stopRecording", client);
+      relayMessage("playRecording", client);
     });
 
     server.listen(port);
+  });
+}
+
+function relayMessage(name, client) {
+  client.on(name, function(data) {
+    client.broadcast.emit(name, data);
   });
 }

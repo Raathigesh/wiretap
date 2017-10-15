@@ -7,14 +7,17 @@ import AceEditor from "react-ace";
 import "brace/mode/java";
 import "brace/theme/github";
 
-function CodeEditor() {
+function CodeEditor({ code, onChange }) {
   return (
     <AceEditor
       mode="java"
       theme="github"
       name="UNIQUE_ID_OF_DIV"
-      height="250px"
+      height="228px"
+      width="100%"
+      value={code}
       editorProps={{ $blockScrolling: true }}
+      onChange={onChange}
     />
   );
 }

@@ -8,14 +8,14 @@ const ContentContainer = styled.div`
   justify-content: center;
 `;
 
-export default function EmptyContent() {
+export default function EmptyContent({ title, subtitle }) {
   return (
     <ContentContainer className="empty">
       <div className="empty-icon">
         <i className="icon icon-3x icon-emoji" />
       </div>
-      <p className="empty-title h5">Select an observable</p>
-      <p className="empty-subtitle">Click on an observable from the sidebar</p>
+      <p className="empty-title h5">{title}</p>
+      <p className="empty-subtitle">{subtitle}</p>
     </ContentContainer>
   );
 }
