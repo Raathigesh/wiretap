@@ -29,54 +29,64 @@ const Header = styled.div`
 
 function Recordings({
   trackerId,
+  currentTracker,
   nodeType,
   isRecording,
   recordings,
   startRecording,
   stopRecording,
   playRecording,
-  renameRecording
+  renameRecording,
+  removeRecording
 }) {
   let title = "It's empty over here";
   let subtitle = "Record new actions by clicking the 'Record action' button";
 
-  if (nodeType !== 1) { // mst node
-    title = "Not supported"
-    subtitle = "Mobx does not support recording actions. Checkout mobx state tree. Seriously!"
+  if (nodeType !== 1) {
+    // mst node
+    title = "Not supported";
+    subtitle =
+      "Mobx does not support recording actions. Checkout mobx state tree. Seriously!";
   }
 
   return (
     <RecordingContainer>
       <RecordingsHeader>
         <span>Recordings</span>
-        {nodeType === 1 && <button
-          className="btn btn-sm"
-          onClick={() => {
-            if (isRecording) {
-              stopRecording(trackerId);
-            } else {
-              startRecording(trackerId);
-            }
-          }}
-        >
-          <IfYesThenFirst condition={isRecording}>
-            <span>Stop Recording</span>
-            <span>Start Recording</span>
-          </IfYesThenFirst>
-        </button>}
+        {nodeType === 1 && (
+          <button
+            className="btn btn-sm"
+            onClick={() => {
+              if (isRecording) {
+                stopRecording(trackerId);
+              } else {
+                startRecording(trackerId);
+              }
+            }}
+          >
+            <IfYesThenFirst condition={isRecording}>
+              <span>Stop Recording</span>
+              <span>Start Recording</span>
+            </IfYesThenFirst>
+          </button>
+        )}
       </RecordingsHeader>
       {recordings.map((recording, index) => {
         return (
           <Recording
             key={index}
+            currentTracker={currentTracker}
             trackerId={trackerId}
             recording={recording}
             playRecording={playRecording}
             renameRecording={renameRecording}
+            removeRecording={removeRecording}
           />
         );
       })}
-      {(recordings.length !== 1 || recordings.length === 0) && <EmptyContent title={title} subtitle={subtitle}/>}
+      {recordings.length === 0 && (
+        <EmptyContent title={title} subtitle={subtitle} />
+      )}
     </RecordingContainer>
   );
 }

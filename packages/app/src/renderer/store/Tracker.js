@@ -103,7 +103,10 @@ export default class Tracker {
       },
 
       removeRecording(recodringId) {
-        this.recordings.remove(recording => recoding.id === recodringId);
+        const itemToRemove = this.recordings.filter(
+          recording => recording.recordingId === recodringId
+        );
+        this.recordings.remove(itemToRemove[0]);
       },
 
       renameRecording(recordingId, name) {

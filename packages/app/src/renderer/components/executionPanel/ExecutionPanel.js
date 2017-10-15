@@ -32,6 +32,7 @@ class ExecutionPanel extends Component {
         />
         {currentTracker.nodeType !== 2 && (
           <Recordings
+            currentTracker={currentTracker}
             trackerId={currentTracker.id}
             nodeType={currentTracker.nodeType}
             isRecording={isRecording}
