@@ -2,10 +2,6 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
 import { observer } from "mobx-react";
-import { toJS } from "mobx";
-import isString from "lodash.isstring";
-import SplitPane from "react-split-pane";
-import ObjectView from "./components/ObjectView";
 import Frame from "./components/Frame";
 import Sidebar from "./components/Sidebar/Sidebar";
 import Content from "./components/Content";
@@ -13,7 +9,7 @@ import EmptyContent from "./components/EmptyContent";
 import LogPanel from "./components/logs/LogPanel";
 import ExecutionPanel from "./components/ExecutionPanel/ExecutionPanel";
 import DevTools from "mobx-react-devtools";
-
+import SplitPane from "react-split-pane";
 import "./styles/global.css";
 import "./styles/loader.css";
 import "spectre.css/dist/spectre.min.css";
@@ -41,32 +37,12 @@ const Wrapper = styled.div`
 
 class App extends Component {
   render() {
-    const {
-      currrentTrackerId,
-      trackers,
-      setCurrentTrackerId,
-      connectionInfo,
-      currentTracker,
-      update,
-      executeAction,
-      applySnapshot,
-      applyPatch,
-      startRecording,
-      stopRecording,
-      playRecording,
-      isRecording
-    } = state;
-    const isValueAString = currentTracker && isString(currentTracker.value);
+    const { currentTracker, update, applySnapshot, applyPatch } = state;
+
     return (
       <AppContainer>
         <DevTools />
-        <Sidebar
-          currrentTrackerId={currrentTrackerId}
-          trackers={trackers}
-          setTrackerId={setCurrentTrackerId}
-          connectionInfo={connectionInfo}
-          updater={updater}
-        />
+        <Sidebar store={state} updater={updater} />
         <Wrapper>
           <MainCotent>
             {currentTracker && (
@@ -77,22 +53,7 @@ class App extends Component {
                 minSize={300}
                 defaultSize={600}
               >
-                <Content
-                  name={currentTracker.name}
-                  updatedOn={currentTracker.updatedOn}
-                >
-                  {isValueAString && <kbd>{currentTracker.value}</kbd>}
-                  {!isValueAString && (
-                    <ObjectView
-                      name={currentTracker.name}
-                      data={currentTracker && toJS(currentTracker.value)}
-                      update={payload => {
-                        update(payload);
-                      }}
-                      isEditable={currentTracker.nodeType === 0}
-                    />
-                  )}
-                </Content>
+                <Content currentTracker={currentTracker} update={update} />
                 {currentTracker && (
                   <LogPanel
                     tracker={currentTracker}
@@ -110,18 +71,7 @@ class App extends Component {
             )}
           </MainCotent>
           {currentTracker &&
-            currentTracker.nodeType !== 2 && (
-              <ExecutionPanel
-                tracker={currentTracker}
-                executeAction={executeAction}
-                isRecording={isRecording}
-                startRecording={startRecording}
-                stopRecording={stopRecording}
-                playRecording={playRecording}
-                renameRecording={(recordingId, name) =>
-                  currentTracker.renameRecording(recordingId, name)}
-              />
-            )}
+            currentTracker.nodeType !== 2 && <ExecutionPanel store={state} />}
         </Wrapper>
       </AppContainer>
     );

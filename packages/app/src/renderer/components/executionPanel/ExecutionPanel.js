@@ -15,31 +15,32 @@ const Container = styled.div`
 class ExecutionPanel extends Component {
   render() {
     const {
-      tracker,
+      currentTracker,
       executeAction,
       startRecording,
       stopRecording,
       playRecording,
-      isRecording,
-      renameRecording
-    } = this.props;
+      isRecording
+    } = this.props.store;
+
     return (
       <Container>
         <Actions
-          tracker={tracker}
-          actions={tracker.actions}
+          tracker={currentTracker}
+          actions={currentTracker.actions}
           executeAction={executeAction}
         />
-        {tracker.nodeType !== 2 && (
+        {currentTracker.nodeType !== 2 && (
           <Recordings
-            trackerId={tracker.id}
-            nodeType={tracker.nodeType}
+            trackerId={currentTracker.id}
+            nodeType={currentTracker.nodeType}
             isRecording={isRecording}
-            recordings={tracker.recordings}
+            recordings={currentTracker.recordings}
             startRecording={startRecording}
             stopRecording={stopRecording}
             playRecording={playRecording}
-            renameRecording={renameRecording}
+            renameRecording={(recordingId, name) =>
+              currentTracker.renameRecording(recordingId, name)}
           />
         )}
       </Container>

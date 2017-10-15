@@ -20,12 +20,13 @@ const Divider = styled.li`
 class Sidebar extends Component {
   render() {
     const {
+      currrentTrackerId,
       trackers,
-      setTrackerId,
       connectionInfo,
-      updater,
-      currrentTrackerId
-    } = this.props;
+      update,
+      setCurrentTrackerId
+    } = this.props.store;
+
     const observableTrackers = trackers.filter(tracker => tracker.isObservable);
     const logTrackers = trackers.filter(tracker => !tracker.isObservable);
     return (
@@ -73,7 +74,7 @@ class Sidebar extends Component {
                   key={index}
                   className="menu-item"
                   onClick={() => {
-                    setTrackerId(tracker.id);
+                    setCurrentTrackerId(tracker.id);
                   }}
                 >
                   <a href="#menus" className={isActive ? "active" : ""}>
@@ -84,7 +85,7 @@ class Sidebar extends Component {
             })}
           </Menus>
         </div>
-        <Footer connectionInfo={connectionInfo} updater={updater} />
+        <Footer connectionInfo={connectionInfo} updater={this.props.updater} />
       </SidebarContainer>
     );
   }
