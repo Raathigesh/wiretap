@@ -6,6 +6,7 @@ const ContentContainer = styled.div`
   flex-grow: 1;
   flex-direction: column;
   justify-content: center;
+  padding: 0px;
 `;
 
 export default function EmptyContent({ title, subtitle }) {

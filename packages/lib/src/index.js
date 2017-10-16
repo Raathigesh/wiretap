@@ -1,23 +1,30 @@
+//@ts-check
 import isString from "lodash.isstring";
-import {
-  observe,
-  isObservable,
-  isObservableArray,
-  runInAction,
-  spy,
-  extras,
-  whyRun
-} from "mobx";
+import { extras } from "mobx";
+import { isStateTreeNode } from "mobx-state-tree";
+import shortid from "shortid";
 import initializeWalkieTalkie, {
   emitChange,
-  emitSpy,
   emitInitialize
 } from "./walkieTalkie";
-const shortid = require("shortid");
+import globalState from "./globalTrackingState";
+import { inspect as inspectMobx, handleUpdate } from "./mobxTracker";
+import {
+  inspect as inspectStateTree,
+  handleSnapshotUpdate,
+  handlePatchUpdate,
+  startRecording,
+  stopRecording,
+  playRecording
+} from "./mobxStateTreeTracker";
 
 extras.shareGlobalState();
-const globalTrackingState = {};
 
+/**
+ * Initializes wiretap and establishes the connection with the server
+ * @param {*} appName
+ * @param {*} options
+ */
 export function wiretap(appName, options = {}) {
   if (!isString(appName)) {
     throw new Error("First parameter should be the application name.");
@@ -27,6 +34,24 @@ export function wiretap(appName, options = {}) {
   initializeWalkieTalkie(port, {
     onUpdate: payload => {
       handleUpdate(payload);
+    },
+    onExecuteAction: ({ id, name, args }) => {
+      executeAction(id, name, args);
+    },
+    onApplySnapshot: payload => {
+      handleSnapshotUpdate(payload);
+    },
+    onApplyPatch: payload => {
+      handlePatchUpdate(payload);
+    },
+    onStartRecording: ({ id }) => {
+      startRecording(id);
+    },
+    onStopRecording: ({ id, recordingId }) => {
+      stopRecording(id, recordingId);
+    },
+    onPlayRecording: ({ id, recordingId }) => {
+      playRecording(id, recordingId);
     }
   });
 
@@ -41,21 +66,19 @@ export function inspect(name, thingToTrack) {
     throw new Error("First parameter should be a string.");
   }
 
-  if (isObservableArray(thingToTrack)) {
-    handleObservableArray(name, thingToTrack);
-  } else if (isObservable(thingToTrack)) {
-    handleObservableObject(name, thingToTrack);
+  if (isStateTreeNode(thingToTrack)) {
+    inspectStateTree(name, thingToTrack);
   } else {
-    // if the thing provided thing for inspection is not an observable itself, interate the keys
-    // and start tracking observable properties recursively. Don't you feel good when you implement a
-    // recursion. I do every damn time!
-    Object.keys(thingToTrack).forEach(key => {
-      const nestedThingToTrack = thingToTrack[key];
-      inspect(`${name}.${key}`, nestedThingToTrack);
-    });
+    inspectMobx(name, thingToTrack);
   }
 }
 
+/**
+ * Sends the provided values to the server.
+ * Just sends the provided object as is. No fancy business.
+ * @param {*} name
+ * @param {*} obj
+ */
 export function log(name, obj) {
   if (!isString(name)) {
     throw new Error("First parameter should be a string.");
@@ -70,56 +93,8 @@ export function log(name, obj) {
   });
 }
 
-function handleObservableArray(name, observableArray) {
-  const id = shortid.generate();
-  globalTrackingState[id] = observableArray;
-  emitChange({
-    id,
-    name,
-    value: observableArray,
-    isObservable: true
-  });
-}
-
-function handleObservableObject(name, observableObject) {
-  const id = shortid.generate();
-  globalTrackingState[id] = observableObject;
-  // observe the observable for futre updates
-  observe(observableObject, change => {
-    emitChange({
-      id,
-      name,
-      value: observableObject,
-      isObservable: true,
-      changeDescription: {}
-    });
-  });
-
-  // but also send the initial values to the dashboard
-  emitChange({
-    id,
-    name,
-    value: observableObject,
-    isObservable: true
-  });
-}
-
-function handleUpdate(payload) {
-  let observableThing = globalTrackingState[payload.trackerId];
-  payload.namespace.forEach(key => {
-    observableThing = observableThing[key];
-  });
-  observableThing[payload.name] = payload.new_value;
-}
-
-// not yet exposed
-function startSpying() {
-  spy(event => {
-    if (event.type === "action") {
-      emitSpy({
-        name: event.type,
-        data: event
-      });
-    }
-  });
+function executeAction(id, name, args) {
+  const observable = globalState.getObservable(id);
+  // invoke the action with the args
+  observable[name](...args);
 }
