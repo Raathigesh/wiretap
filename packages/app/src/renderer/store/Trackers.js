@@ -28,6 +28,9 @@ class Trackers {
         });
       },
       update: payload => {
+        if (typeof payload.existing_value === "boolean") {
+          payload.new_value = payload.new_value === "true";
+        }
         payload.trackerId = this.currrentTrackerId;
         socket.emit("update", payload);
       }
@@ -87,7 +90,9 @@ class Trackers {
     if (nodeType === 0) {
       const mobxTracker = this.trackers.find(item => item.id === payload.id);
       if (mobxTracker) {
+        mobxTracker.setName(payload.name);
         mobxTracker.setUpdatedTime(moment());
+        mobxTracker.addActions(payload.actions);
         mobxTracker.setValue(payload.value);
         mobxTracker.addObserveLog(payload.value, payload.action);
       } else {

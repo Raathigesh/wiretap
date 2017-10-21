@@ -16,9 +16,9 @@ import {
   applyPatch
 } from "mobx-state-tree";
 
-export function inspect(name, thingToTrack) {
+export function inspect(name, thingToTrack, actions) {
   const id = globalState.addObservable(thingToTrack);
-  const actions = getActions(thingToTrack);
+  // const actions = getActions(thingToTrack);
 
   emitChange({
     id,

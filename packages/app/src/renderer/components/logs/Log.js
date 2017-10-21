@@ -19,13 +19,16 @@ const CardHeader = styled.div`
   padding-left: 17px;
 `;
 const CardTitle = styled.div`float: left;`;
+const Order = styled.mark`padding: 4px;`;
 
-function Log({ title, log, currrentTrackerId, applySnapshot }) {
+function Log({ order, title, log, currrentTrackerId, applySnapshot }) {
   const subLabelText = log.isExpanded ? "Collapse" : "Expand";
   return (
     <CardContainer className="card">
       <CardHeader>
-        <CardTitle className="card-title">{title}</CardTitle>
+        <CardTitle className="card-title">
+          <Order>{order}</Order> {title}
+        </CardTitle>
         <ToggleHandler
           className="btn btn-sm"
           onClick={() => {

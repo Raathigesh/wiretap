@@ -38,6 +38,7 @@ const ActionsColumn = styled.div`
   overflow: auto;
   color: #fffbfb;
   flex-wrap: wrap;
+  flex-grow: 1;
 `;
 
 const ExecuteButton = styled.button`margin-top: 8px;`;
@@ -58,16 +59,18 @@ class Actions extends Component {
         <Header>
           <span>Actions</span>
         </Header>
-        {actions.length > 0 && <Arguments
-          open={this.state.isArgDialogOpen}
-          action={action}
-          tracker={tracker}
-          onClose={() => {
-            this.setState({
-              isArgDialogOpen: false
-            });
-          }}
-        />}
+        {actions.length > 0 && (
+          <Arguments
+            open={this.state.isArgDialogOpen}
+            action={action}
+            tracker={tracker}
+            onClose={() => {
+              this.setState({
+                isArgDialogOpen: false
+              });
+            }}
+          />
+        )}
         <ActionsColumn>
           {actions.map((action, index) => {
             return (
@@ -86,9 +89,12 @@ class Actions extends Component {
               />
             );
           })}
-          {
-            actions.length === 0 && <EmptyContent title="No actions" subtitle="This observable does not have any actions associated." />
-          }
+          {actions.length === 0 && (
+            <EmptyContent
+              title="No actions"
+              subtitle="This observable does not have any actions associated."
+            />
+          )}
         </ActionsColumn>
       </ActionsContainer>
     );

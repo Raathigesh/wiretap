@@ -11,13 +11,26 @@ const ContentContainer = styled.div`
 
 const TraceContainer = styled.div`overflow: auto;`;
 
+const ClearButton = styled.button`float: right;`;
+
 class Spy extends Component {
   render() {
-    const { tracker, applySnapshot, applyPatch } = this.props;
+    const { tracker, applySnapshot, applyPatch, clearLogs } = this.props;
     return (
       <ContentContainer className="card">
         <div className="card-header">
-          <div className="card-title h5">Debug panel</div>
+          <div className="card-title h5">
+            Debug panel{" "}
+            <ClearButton
+              className="btn btn-sm"
+              onClick={() => {
+                tracker.clearLogs();
+              }}
+            >
+              Clear
+            </ClearButton>
+          </div>
+
           <div className="card-subtitle text-gray">
             Actions, snaphots and patches
           </div>
@@ -63,6 +76,7 @@ class Spy extends Component {
             tracker.logs.actionLogs.map((action, index) => {
               return (
                 <Log
+                  order={action.displayNumber}
                   key={index}
                   title={
                     tracker.nodeType === 1 ? action.value.name : action.time
@@ -78,6 +92,7 @@ class Spy extends Component {
             tracker.logs.patches.map((patch, index) => {
               return (
                 <Log
+                  order={patch.displayNumber}
                   key={index}
                   title={patch.value.path}
                   log={patch}
@@ -92,6 +107,7 @@ class Spy extends Component {
             tracker.logs.snapshots.map((snapshot, index) => {
               return (
                 <Log
+                  order={snapshot.displayNumber}
                   key={index}
                   title={snapshot.time}
                   log={snapshot}

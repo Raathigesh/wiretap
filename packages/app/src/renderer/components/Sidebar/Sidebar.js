@@ -27,8 +27,6 @@ class Sidebar extends Component {
       setCurrentTrackerId
     } = this.props.store;
 
-    const observableTrackers = trackers.filter(tracker => tracker.isObservable);
-    const logTrackers = trackers.filter(tracker => !tracker.isObservable);
     return (
       <SidebarContainer className="panel">
         <div className="panel-header text-center">
@@ -44,30 +42,7 @@ class Sidebar extends Component {
         </div>
         <div className="panel-body">
           <Menus className="menu">
-            {observableTrackers.length > 0 && (
-              <Divider className="divider" data-content="Observables" />
-            )}
-            {observableTrackers.map((tracker, index) => {
-              const isActive = tracker.id === currrentTrackerId;
-              return (
-                <li
-                  key={index}
-                  className="menu-item"
-                  onClick={() => {
-                    setTrackerId(tracker.id);
-                  }}
-                >
-                  <a href="#menus" className={isActive ? "active" : ""}>
-                    {tracker.name}
-                  </a>
-                </li>
-              );
-            })}
-
-            {logTrackers.length > 0 && (
-              <Divider className="divider" data-content="Logs" />
-            )}
-            {logTrackers.map((tracker, index) => {
+            {trackers.map((tracker, index) => {
               const isActive = tracker.id === currrentTrackerId;
               return (
                 <li

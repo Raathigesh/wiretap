@@ -2146,6 +2146,10 @@ minimist@^1.2.0:
   dependencies:
     minimist "0.0.8"
 
+mobx-state-tree@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/mobx-state-tree/-/mobx-state-tree-1.0.1.tgz#7b42616e5947e36d4c3413b404c2800b79c4305b"
+
 mobx@^3.3.0:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/mobx/-/mobx-3.3.1.tgz#c38fc1a287a0dda3f5d4b85efe1137fedd9dcdf0"

@@ -61,13 +61,12 @@ export function wiretap(appName, options = {}) {
   });
 }
 
-export function inspect(name, thingToTrack) {
+export function inspect(name, thingToTrack, actions) {
   if (!isString(name)) {
     throw new Error("First parameter should be a string.");
   }
-
   if (isStateTreeNode(thingToTrack)) {
-    inspectStateTree(name, thingToTrack);
+    inspectStateTree(name, thingToTrack, actions);
   } else {
     inspectMobx(name, thingToTrack);
   }

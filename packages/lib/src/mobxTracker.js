@@ -8,17 +8,15 @@ import globalState from "./globalTrackingState";
  */
 export function inspect(name, thingToTrack) {
   if (isObservableArray(thingToTrack)) {
-    handleObservableArray(name, thingToTrack);
+    const id = globalState.addObservable(thingToTrack);
+    handleObservableArray(id, name, thingToTrack, thingToTrack);
   } else if (isObservable(thingToTrack)) {
-    handleObservableObject(name, thingToTrack);
+    const id = globalState.addObservable(thingToTrack);
+    handleObservableObject(id, name, thingToTrack, thingToTrack);
   } else {
-    // if the thing provided thing for inspection is not an observable itself, interate the keys
-    // and start tracking observable properties recursively. Don't you feel good when you implement a
-    // recursion. I do every damn time!
-    Object.keys(thingToTrack).forEach(key => {
-      const nestedThingToTrack = thingToTrack[key];
-      inspect(`${name}.${key}`, nestedThingToTrack);
-    });
+    throw new Error(
+      "The object you are trying to inspect is not an observable."
+    );
   }
 }
 
@@ -29,36 +27,65 @@ export function inspect(name, thingToTrack) {
  * @param {*} name
  * @param {*} observableArray
  */
-function handleObservableArray(name, observableArray) {
-  const id = globalState.addObservable(observableArray);
-
+function handleObservableArray(id, name, observableArray, thingToEmit) {
+  let arrayItemObserverDisposables = [];
   emitChange({
     id,
     name,
     isMobx: true,
-    value: toJS(observableArray)
+    value: toJS(thingToEmit)
   });
 
   observe(observableArray, change => {
     emitChange({
       id,
       isMobx: true,
-      value: toJS(observableArray),
+      value: toJS(thingToEmit),
       action: change
     });
+
+    // track array elements
+    arrayItemObserverDisposables = observeArrayItems(
+      id,
+      observableArray,
+      arrayItemObserverDisposables,
+      thingToEmit
+    );
   });
 
   // track array elements
+  arrayItemObserverDisposables = observeArrayItems(
+    id,
+    observableArray,
+    arrayItemObserverDisposables,
+    thingToEmit
+  );
+}
+
+function observeArrayItems(
+  id,
+  observableArray,
+  observeDisposables,
+  thingToEmit
+) {
+  observeDisposables.forEach(disposable => {
+    disposable();
+  });
+
+  let arrayItemObserverDisposables = [];
   observableArray.forEach(observableItem => {
-    observe(observableItem, change => {
+    const disposer = observe(observableItem, change => {
       emitChange({
         id,
         isMobx: true,
-        value: toJS(observableArray),
+        value: toJS(thingToEmit),
         action: change
       });
     });
+    arrayItemObserverDisposables.push(disposer);
   });
+
+  return arrayItemObserverDisposables;
 }
 
 /**
@@ -67,8 +94,8 @@ function handleObservableArray(name, observableArray) {
    * @param {*} name
    * @param {*} observableObject
    */
-function handleObservableObject(name, observableObject) {
-  const id = globalState.addObservable(observableObject);
+function handleObservableObject(id, name, observableObject, thingToEmit) {
+  let arrayItemObserverDisposables = [];
 
   const mobxActions = Object.getOwnPropertyNames(
     Object.getPrototypeOf(observableObject)
@@ -76,38 +103,31 @@ function handleObservableObject(name, observableObject) {
     return observableObject[property].isMobxAction;
   });
 
+  Object.getOwnPropertyNames(observableObject)
+    .filter(propertyName => {
+      return isObservableArray(observableObject[propertyName]);
+    })
+    .forEach(item => {
+      handleObservableArray(id, null, observableObject[item], thingToEmit);
+    });
+
   // observe the observable for futre updates
   observe(observableObject, change => {
     emitChange({
       id,
       isMobx: true,
-      value: toJS(observableObject),
+      value: toJS(thingToEmit),
       action: change,
       actions: mobxActions
     });
   });
-
-  // if there is an array, listen to that array as well
-  Object.getOwnPropertyNames(observableObject)
-    .filter(propertyName => isObservableArray(observableObject[propertyName]))
-    .forEach(item => {
-      observe(observableObject[item], change => {
-        emitChange({
-          id,
-          isMobx: true,
-          value: toJS(observableObject),
-          action: change,
-          actions: mobxActions
-        });
-      });
-    });
 
   // but also send the initial values to the dashboard
   emitChange({
     id,
     name,
     isMobx: true,
-    value: toJS(observableObject),
+    value: toJS(thingToEmit),
     actions: mobxActions
   });
 }
