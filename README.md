@@ -90,24 +90,24 @@ log("CustomObject", {
 });
 ```
 
-# How does this differ from mobx-dev-tools?
+## How does this differ from mobx-dev-tools?
 Mobx-dev-tools is an awesome tool to inspect your react app and see how the UI reacts to state changes. Wiretap focues more on the state itself. You would still need mobx-dev-tools to keep an eye on the react components.
 
-# The road ahead
+## The road ahead
  - Support for mobx computed properties.
  - Support for mobx-state-tree views.
  - Support for react native.
 
- ## Looking for your suggestions
+ ### Looking for your suggestions
  Let me know what you want to see in wiretap. Go right ahead and share your feedback and thoughts by creating an issue.
 
-# Inspiration
+## Inspiration
 Inspired by [Reactotron](https://github.com/infinitered/reactotron).
 
-# Thanks
+## Thanks
 Thanks [Alex Bergin](https://codepen.io/abergin/pen/XpwRpE)  for the awesome loading animation.
 
-# License
+## License
 MIT © [Raathigeshan](https://twitter.com/Raathigeshan)
 
 <a target='_blank' rel='nofollow' href='https://app.codesponsor.io/link/2VtFmV65B5vo13VnsCfGqKU8/Raathigesh/wiretap'>
