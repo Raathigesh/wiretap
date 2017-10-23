@@ -1,6 +1,6 @@
 <div align="center">
   <img src="./docs/wiretap.png" alt="Wiretap" height="100">
-    <h3 align="center">Stare at the soul of your mobx and mobx state tree observables</h3>
+    <h6 align="center">Stare at the soul of your mobx and mobx state tree observables</h6>
 </div>
 
  <img src="./docs/wiretap.gif" alt="Wiretap">
