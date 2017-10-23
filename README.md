@@ -6,6 +6,8 @@ _The dev tool you and your mobx and mobx-state-tree apps deserve_
 
 <img src="./docs/wiretap.gif" alt="Wiretap" style="margin-top: 15px">
 
+## What's Mobx Wiretap?
+Mobx wiretap is an electron app which allows you to inspect your mobx and mobx-state-tree states during **development** time. This makes debugging easy and fun.
 
 ## Features
 - Mobx
