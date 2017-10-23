@@ -1,11 +1,8 @@
-<div align="center">
+<h1 align="center">
   <img src="./docs/wiretap.png" alt="Wiretap" height="100">
-    <h6 align="center">Stare at the soul of your mobx and mobx state tree observables</h6>
-</div>
-
- <img src="./docs/wiretap.gif" alt="Wiretap">
-
-
+    <h6 align="center" style="margin-top: -5px; margin-bottom: 42px;">Stare at the soul of your mobx and mobx state tree observables</h6>
+   <img src="./docs/wiretap.gif" alt="Wiretap" style="margin-top: 15px">
+</h1>
 
 The dev tool you and your mobx and mobx-state-tree apps deserve.
 
