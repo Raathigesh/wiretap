@@ -1,6 +1,6 @@
 {
   "name": "mobx-wiretap",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "main": "./mobx.js",
   "author": "Raathigeshan Kugarajan <raathigesh92@gmail.com>",
   "license": "MIT",
