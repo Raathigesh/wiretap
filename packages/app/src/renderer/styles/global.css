@@ -3,15 +3,15 @@ body {
 }
 
 ::-webkit-scrollbar {
-  width: 2px;
+  width: 5px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #ddd;
+  background: rgb(233, 232, 232);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #adadad;
+  background: #949393;
 }
 
 .ace_editor {

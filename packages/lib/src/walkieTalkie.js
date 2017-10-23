@@ -1,15 +1,22 @@
 import io from "socket.io-client";
 let socket = null;
 
-export default function initialize(port, handlers) {
+export default function initialize(port) {
   socket = io(`http://localhost:${port}`);
-  socket.on("update", handlers.onUpdate);
-  socket.on("executeAction", handlers.onExecuteAction);
-  socket.on("applySnapshot", handlers.onApplySnapshot);
-  socket.on("applyPatch", handlers.onApplyPatch);
-  socket.on("startRecording", handlers.onStartRecording);
-  socket.on("stopRecording", handlers.onStopRecording);
-  socket.on("playRecording", handlers.onPlayRecording);
+}
+export function attachHandlers(handlers) {
+  handlers.onUpdate && socket.on("update", handlers.onUpdate);
+  handlers.onExecuteAction &&
+    socket.on("executeAction", handlers.onExecuteAction);
+  handlers.onApplySnapshot &&
+    socket.on("applySnapshot", handlers.onApplySnapshot);
+  handlers.onApplyPatch && socket.on("applyPatch", handlers.onApplyPatch);
+  handlers.onStartRecording &&
+    socket.on("startRecording", handlers.onStartRecording);
+  handlers.onStopRecording &&
+    socket.on("stopRecording", handlers.onStopRecording);
+  handlers.onPlayRecording &&
+    socket.on("playRecording", handlers.onPlayRecording);
 }
 
 export function emitChange(payload) {

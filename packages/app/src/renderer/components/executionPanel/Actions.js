@@ -19,7 +19,7 @@ const Header = styled.div`
   padding-top: 6px;
   background-color: #f1f1f1;
   font-size: 16px;
-  height: 37px;
+  min-height: 37px;
 `;
 
 const PopoverCard = styled.div`
@@ -38,7 +38,6 @@ const ActionsColumn = styled.div`
   overflow: auto;
   color: #fffbfb;
   flex-wrap: wrap;
-  flex-grow: 1;
 `;
 
 const ExecuteButton = styled.button`margin-top: 8px;`;
@@ -93,6 +92,7 @@ class Actions extends Component {
             <EmptyContent
               title="No actions"
               subtitle="This observable does not have any actions associated."
+              icon="icon-apps"
             />
           )}
         </ActionsColumn>

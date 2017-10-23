@@ -9,11 +9,11 @@ const ContentContainer = styled.div`
   padding: 0px;
 `;
 
-export default function EmptyContent({ title, subtitle }) {
+export default function EmptyContent({ title, subtitle, icon = "icon-emoji" }) {
   return (
     <ContentContainer className="empty">
       <div className="empty-icon">
-        <i className="icon icon-3x icon-emoji" />
+        <i className={`icon icon-3x ${icon}`} />
       </div>
       <p className="empty-title h5">{title}</p>
       <p className="empty-subtitle">{subtitle}</p>

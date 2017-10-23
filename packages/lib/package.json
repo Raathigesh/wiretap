@@ -1,24 +1,22 @@
 {
   "name": "mobx-wiretap",
-  "version": "0.1.0",
-  "main": "./build/main.js",
+  "version": "0.10.0",
+  "main": "./dist/mobx.js",
   "author": "Raathigeshan Kugarajan <raathigesh92@gmail.com>",
   "license": "MIT",
-  "dependencies": {
-    "lodash.isstring": "^4.0.1",
-    "mobx": "^3.3.0",
-    "mobx-state-tree": "^1.0.1",
-    "shortid": "^2.2.8",
-    "socket.io-client": "^2.0.3"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "backpack-core": "^0.4.2"
+    "lodash.isstring": "^4.0.1",
+    "shortid": "^2.2.8",
+    "socket.io-client": "^2.0.3",
+    "webpack": "^3.8.1"
   },
   "peerDependencies": {
-    "mobx": "^3.3.0"
+    "mobx": "^3.3.0",
+    "mobx-state-tree": "^1.0.1"
   },
   "scripts": {
-    "dev": "backpack",
-    "build": "backpack build"
+    "dev": "webpack --config webpack.config.js --watch",
+    "build": "webpack --config webpack.config.js"
   }
 }

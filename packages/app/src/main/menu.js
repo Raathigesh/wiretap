@@ -55,7 +55,7 @@ export default class MenuBuilder {
         submenu: [
           {
             label: "Open dev tools",
-            click() {
+            click: () => {
               this.mainWindow.webContents.openDevTools();
             }
           },

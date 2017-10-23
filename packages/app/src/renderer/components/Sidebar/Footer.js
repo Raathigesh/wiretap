@@ -41,7 +41,9 @@ function Footer({ connectionInfo, updater }) {
         {updater.updateStatus === UpdaterStatus.UpdateAvailableForDownload && (
           <UpdateButton
             className="btn btn-link"
-            onClick={updater.downloadUpdate}
+            onClick={() => {
+              updater.downloadUpdate();
+            }}
           >
             Download and Install
           </UpdateButton>
@@ -49,6 +51,10 @@ function Footer({ connectionInfo, updater }) {
         {updater.updateStatus === UpdaterStatus.DownloadingUpdate && (
           <UpdateLabel>Downloading update</UpdateLabel>
         )}
+        {updater.updateStatus === UpdaterStatus.DownloadingUpdate && (
+          <progress className="progress" value={updater.progress} max="100" />
+        )}
+
         {updater.updateStatus === UpdaterStatus.InstallingUpdate && (
           <UpdateLabel>Installing update</UpdateLabel>
         )}

@@ -12,13 +12,14 @@ const ContentContainer = styled.div`
 const TraceContainer = styled.div`overflow: auto;`;
 
 const ClearButton = styled.button`float: right;`;
+const CardHeader = styled.div`margin-bottom: 10px;`;
 
 class Spy extends Component {
   render() {
     const { tracker, applySnapshot, applyPatch, clearLogs } = this.props;
     return (
       <ContentContainer className="card">
-        <div className="card-header">
+        <CardHeader className="card-header">
           <div className="card-title h5">
             Debug panel{" "}
             <ClearButton
@@ -32,9 +33,9 @@ class Spy extends Component {
           </div>
 
           <div className="card-subtitle text-gray">
-            Actions, snaphots and patches
+            Logs for taking a close look at the changes
           </div>
-        </div>
+        </CardHeader>
         {tracker.nodeType === 1 && (
           <div>
             <ul className="tab tab-block">

@@ -41,7 +41,6 @@ class App extends Component {
 
     return (
       <AppContainer>
-        <DevTools />
         <Sidebar store={state} updater={updater} />
         <Wrapper>
           <MainCotent>

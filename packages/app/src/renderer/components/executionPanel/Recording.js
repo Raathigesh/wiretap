@@ -13,6 +13,7 @@ const RecordingContainer = styled.div`
   padding-left: 15px;
   margin: 5px;
   color: #727e96;
+  min-height: 33px;
 `;
 
 const RecodingLabel = styled.span``;

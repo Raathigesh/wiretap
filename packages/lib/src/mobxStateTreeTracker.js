@@ -15,10 +15,11 @@ import {
   applySnapshot,
   applyPatch
 } from "mobx-state-tree";
+import { isAction } from "mobx";
 
-export function inspect(name, thingToTrack, actions) {
+export function inspect(name, thingToTrack) {
   const id = globalState.addObservable(thingToTrack);
-  // const actions = getActions(thingToTrack);
+  const actions = getActions(thingToTrack);
 
   emitChange({
     id,
@@ -91,9 +92,7 @@ export function handlePatchUpdate({ trackerId, value }) {
 }
 
 function getActions(thingToTrack) {
-  const propertiesOfTheThing = thingToTrack.$treenode.type.propertiesNames;
-  const propertiesToOmit = ["$mobx", "toString", "$treenode", "toJSON"];
-  return Object.getOwnPropertyNames(thingToTrack).filter(item => {
-    return !propertiesOfTheThing.concat(propertiesToOmit).includes(item);
-  });
+  return Object.getOwnPropertyNames(thingToTrack).filter(item =>
+    isAction(thingToTrack[item])
+  );
 }

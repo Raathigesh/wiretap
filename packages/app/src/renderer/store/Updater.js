@@ -19,7 +19,8 @@ class Updater {
   constructor() {
     extendObservable(this, {
       updateStatus: UpdaterStatus.NoUpdate,
-      currentVersion: app.getVersion()
+      currentVersion: app.getVersion(),
+      progress: 0
     });
 
     autoUpdater.on("checking-for-update", () => {
@@ -40,7 +41,10 @@ class Updater {
       autoUpdater.quitAndInstall();
       this.updateStatus = UpdaterStatus.InstallingUpdate;
     });
-    // autoUpdater.checkForUpdates();
+    autoUpdater.on("download-progress", progressObj => {
+      this.progress = progressObj.percent;
+    });
+    autoUpdater.checkForUpdates();
   }
 
   checkForUpdate() {

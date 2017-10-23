@@ -18,7 +18,13 @@ const RecordingsHeader = styled.div`
   padding: 7px;
   background-color: #f1f1f1;
   font-size: 16px;
-  height: 37px;
+  min-height: 37px;
+`;
+
+const RecordingsContent = styled.div`
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Header = styled.div`
@@ -46,7 +52,7 @@ function Recordings({
     // mst node
     title = "Not supported";
     subtitle =
-      "Mobx does not support recording actions. Checkout mobx state tree. Seriously!";
+      "Mobx does not support recording actions. Record and replay is supported with Mobx state tree.";
   }
 
   return (
@@ -71,21 +77,23 @@ function Recordings({
           </button>
         )}
       </RecordingsHeader>
-      {recordings.map((recording, index) => {
-        return (
-          <Recording
-            key={index}
-            currentTracker={currentTracker}
-            trackerId={trackerId}
-            recording={recording}
-            playRecording={playRecording}
-            renameRecording={renameRecording}
-            removeRecording={removeRecording}
-          />
-        );
-      })}
+      <RecordingsContent>
+        {recordings.map((recording, index) => {
+          return (
+            <Recording
+              key={index}
+              currentTracker={currentTracker}
+              trackerId={trackerId}
+              recording={recording}
+              playRecording={playRecording}
+              renameRecording={renameRecording}
+              removeRecording={removeRecording}
+            />
+          );
+        })}
+      </RecordingsContent>
       {recordings.length === 0 && (
-        <EmptyContent title={title} subtitle={subtitle} />
+        <EmptyContent title={title} subtitle={subtitle} icon="icon-apps" />
       )}
     </RecordingContainer>
   );

@@ -2,19 +2,17 @@
   "name": "wiretap",
   "productName": "Wiretap",
   "main": "./dist/main/index.js",
-  "version": "0.1.0",
+  "version": "0.4.0",
   "description": "Wiretap your mobx observables",
   "scripts": {
     "dev": " cross-env ELECTRON_WEBPACK_WDS_PORT=9080 electron-webpack dev",
     "compile": "electron-webpack",
+    "mac": "npm run compile && node_modules/.bin/build --mac",
     "win": "npm run compile && node_modules/.bin/build --win",
-    "all-build": "compile && node_modules/.bin/build --win --mac",
-    "ship": "compile && node_modules/.bin/build --win --mac -p always"
+    "all-build": "npm run compile && node_modules/.bin/build --win --mac",
+    "ship": "npm run compile && node_modules/.bin/build --win --mac -p always"
   },
-  "keywords": [
-    "mobx",
-    "dev-tools"
-  ],
+  "keywords": ["mobx", "dev-tools"],
   "author": "Raathigesh",
   "license": "MIT",
   "dependencies": {
@@ -60,11 +58,8 @@
     "productName": "Mobx Wiretap",
     "mac": {
       "category": "dev.tools",
-      "target": [
-        "zip",
-        "dmg"
-      ],
-      "identity": null
+      "target": ["zip", "dmg"],
+      "identity": "Raathigeshan Kugarajan (PU9359K4W8)"
     },
     "nsis": {
       "perMachine": true
@@ -73,7 +68,7 @@
       {
         "provider": "github",
         "owner": "Raathigesh",
-        "repo": "wiretap"
+        "repo": "wiretap-release-test"
       }
     ]
   }
