@@ -10,7 +10,7 @@ import { executeAction } from "./actionExecutor";
 import { inspect as inspectMobx, handleUpdate } from "./mobxTracker";
 export * from "./extras";
 
-extras.shareGlobalState();
+// extras.shareGlobalState();
 
 /**
  * Initializes wiretap and establishes the connection with the server

@@ -24,7 +24,7 @@ module.exports = {
     },
     library: "mobx-wiretap",
     libraryTarget: "umd",
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve(__dirname),
     filename: "[name].js"
   }
 };
