@@ -1,6 +1,6 @@
 {
   "name": "mobx-wiretap",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "main": "./mobx.js",
   "author": "Raathigeshan Kugarajan <raathigesh92@gmail.com>",
   "license": "MIT",
@@ -17,6 +17,7 @@
   },
   "scripts": {
     "dev": "webpack --config webpack.config.js --watch",
-    "build": "webpack --config webpack.config.js"
+    "build": "webpack --config webpack.config.js",
+    "release": "yarn run build && npm publish"
   }
 }

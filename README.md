@@ -81,7 +81,7 @@ const todo = Todo.create({
 inspect("Todo", todo);
 ```
 
-### 5) Printing plain objects with log()
+### 5) Inspecting plain object with log()
 ```javascript
 import { wiretap, log } from "mobx-wiretap";
 wiretap("My awesome app");

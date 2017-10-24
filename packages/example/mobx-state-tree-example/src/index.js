@@ -11,7 +11,7 @@ import {
   applyPatch,
   getSnapshot
 } from "mobx-state-tree";
-import { wiretap, inspect, log } from "mobx-wiretap/dist/mst";
+import { wiretap, inspect, log } from "mobx-wiretap/mst";
 
 import createRouter from "./utils/router";
 import App from "./components/App";

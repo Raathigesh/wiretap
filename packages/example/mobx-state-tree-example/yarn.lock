@@ -3326,9 +3326,9 @@ mobx-utils@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/mobx-utils/-/mobx-utils-2.0.1.tgz#6460d6436f991b2d3250d51995cbcae2c5707b67"
 
-mobx-wiretap@^0.10.0:
-  version "0.10.0"
-  resolved "https://registry.yarnpkg.com/mobx-wiretap/-/mobx-wiretap-0.10.0.tgz#39f49041ccbee492e526121baf45433e0780cde5"
+mobx-wiretap@^0.12.0:
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/mobx-wiretap/-/mobx-wiretap-0.12.0.tgz#9da072c027ea51e1f8a1eec736af7b24493cae11"
 
 mobx@^3.1.16:
   version "3.1.16"

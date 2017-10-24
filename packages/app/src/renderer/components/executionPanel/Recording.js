@@ -18,7 +18,7 @@ const RecordingContainer = styled.div`
 
 const RecodingLabel = styled.span``;
 const RecodingButton = styled.button`margin-left: 5px;`;
-
+const RenameTextbox = styled.input`width: 400px;`;
 class Recording extends Component {
   constructor() {
     super();
@@ -40,7 +40,7 @@ class Recording extends Component {
       <RecordingContainer>
         {!this.state.isEdit && <RecodingLabel>{recording.name}</RecodingLabel>}
         {this.state.isEdit && (
-          <input
+          <RenameTextbox
             ref={ele => (this.renameTextbox = ele)}
             className="form-input input-sm"
             type="text"

@@ -58,8 +58,6 @@ app.on("activate", () => {
 app.on("ready", () => {
   mainWindow = createMainWindow();
 
-  if (!isDevelopment) {
-    const menuBuilder = new MenuBuilder(mainWindow);
-    menuBuilder.buildMenu();
-  }
+  const menuBuilder = new MenuBuilder(mainWindow);
+  menuBuilder.buildMenu();
 });

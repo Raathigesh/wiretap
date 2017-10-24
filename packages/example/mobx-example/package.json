@@ -1,8 +1,7 @@
 {
   "name": "mobx-react-todomvc",
   "version": "1.0.0",
-  "description":
-    "TodoMVC reference implementation based on React TodoMVC and mobx-react-boilerplate",
+  "description": "TodoMVC reference implementation based on React TodoMVC and mobx-react-boilerplate",
   "scripts": {
     "start": "node bin/server.js",
     "lint": "eslint src",
@@ -20,8 +19,7 @@
     "todomvc",
     "todo-mvc"
   ],
-  "author":
-    "Michel Weststrate <mweststrate@gmail.com> (http://github.com/mweststrate)",
+  "author": "Michel Weststrate <mweststrate@gmail.com> (http://github.com/mweststrate)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/mobxjs/mobx/issues"
@@ -58,7 +56,7 @@
     "mobx": "^3.1.16",
     "mobx-react": "^4.2.2",
     "mobx-react-devtools": "^4.2.15",
-    "mobx-wiretap": "^0.11.0",
+    "mobx-wiretap": "^0.12.0",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",

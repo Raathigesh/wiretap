@@ -46,7 +46,7 @@ function Recordings({
   removeRecording
 }) {
   let title = "It's empty over here";
-  let subtitle = "Record new actions by clicking the 'Record action' button";
+  let subtitle = "Record new actions by clicking the 'Start Recoding' button";
 
   if (nodeType !== 1) {
     // mst node
