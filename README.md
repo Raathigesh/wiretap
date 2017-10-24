@@ -92,8 +92,16 @@ log("CustomObject", {
 });
 ```
 
-## How does this differ from mobx-dev-tools?
+## Examples
+- [Mobx example](https://github.com/Raathigesh/wiretap/tree/master/packages/example/mobx-example)
+- [Mobx state tree example](https://github.com/Raathigesh/wiretap/tree/master/packages/example/mobx-state-tree-example)
+
+## FAQ
+<details>
+  <summary>How does this differ from mobx-dev-tools?</summary>
+
 Mobx-dev-tools is an awesome tool to inspect your react app and see how the UI reacts to state changes. Wiretap focues more on the state itself. You would still need mobx-dev-tools to keep an eye on the react components.
+</details>
 
 ## The road ahead
  - Support for mobx computed properties.
@@ -102,6 +110,11 @@ Mobx-dev-tools is an awesome tool to inspect your react app and see how the UI r
 
  ### Looking for your suggestions
  Let me know what you want to see in wiretap. Go right ahead and share your feedback and thoughts by creating an issue.
+
+## Contribute
+- Go into `packages/app` directory
+- Do `yarn install`
+- Run `yarn dev` to start the app
 
 ## Inspiration
 Inspired by [Reactotron](https://github.com/infinitered/reactotron).

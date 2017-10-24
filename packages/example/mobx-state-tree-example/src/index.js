@@ -11,12 +11,11 @@ import {
   applyPatch,
   getSnapshot
 } from "mobx-state-tree";
+import { wiretap, inspect, log } from "mobx-wiretap/dist/mst";
 
 import createRouter from "./utils/router";
 import App from "./components/App";
 import "./index.css";
-
-import { wiretap, inspect, log } from "mobx-wiretap/dist/mst";
 
 import { ShopStore } from "./stores/ShopStore";
 
@@ -31,9 +30,10 @@ const shop = ShopStore.create(
   }
 );
 
+// Mobx wiretap integration
 inspect("Shop store", shop);
 inspect("Book store", shop.bookStore);
-inspect("Card", shop.cart);
+inspect("Cart", shop.cart);
 
 const history = {
   snapshots: observable.shallowArray(),
