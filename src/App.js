@@ -24,8 +24,8 @@ const FeatureGrid = styled.div`
   margin-left: auto;
   margin-right: auto;
   flex-flow: wrap;
-  margin-left: 100px;
-  margin-right: 100px;
+  margin-left: 200px;
+  margin-right: 200px;
   ${media.desktop`
   margin-right: ${props => props.theme.mainMargin.desktop};
   `};

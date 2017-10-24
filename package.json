@@ -1,8 +1,20 @@
 {
-	"devDependencies": {
-		"lerna": "^2.2.0"
-	},
-	"main": "index.js",
-	"author": "Raathigeshan Kugarajan <raathigesh92@gmail.com>",
-	"license": "MIT"
+  "name": "wiretap",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "react-ga": "^2.3.5",
+    "react-scripts": "1.0.14",
+    "react-syntax-highlighter": "^5.7.1",
+    "styled-components": "^2.2.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "ci": "npm install && npm run build"
+  }
 }

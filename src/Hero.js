@@ -10,6 +10,7 @@ const HeroGrid = styled.div`
 
 const DetailPanel = styled.div`
   padding: 100px;
+  padding-right: 50px;
   ${media.tablet`padding: ${props =>
     props.theme.mainMargin
       .tablet}; text-align: center;`} ${media.phone`padding: ${props =>
@@ -39,7 +40,7 @@ const DownloadButton = styled.a`
 
 const ImageContainer = styled.div`
   margin: auto;
-  margin-right: 50px;
+  margin-right: 100px;
   ${media.tablet`margin-left: 5px; margin-right: 5px;`} ${media.phone`margin-left: 5px; margin-right: 5px;`};
 `;
 

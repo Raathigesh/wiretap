@@ -4,6 +4,9 @@ import styled from "styled-components";
 const FooterGrid = styled.div`
   text-align: center;
   padding: 10px;
+  color: #743dc2;
+  font-size: 12px;
+  margin-top: 10px;
 `;
 
 const Footer = () => (
