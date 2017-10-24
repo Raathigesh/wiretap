@@ -2667,9 +2667,9 @@ mobx-react@^4.2.2:
   dependencies:
     hoist-non-react-statics "^1.2.0"
 
-mobx-wiretap@^0.10.0:
-  version "0.10.0"
-  resolved "https://registry.yarnpkg.com/mobx-wiretap/-/mobx-wiretap-0.10.0.tgz#39f49041ccbee492e526121baf45433e0780cde5"
+mobx-wiretap@^0.11.0:
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/mobx-wiretap/-/mobx-wiretap-0.11.0.tgz#9db78a2f5287b22955950cd79f2197f32af3c0e6"
 
 mobx@^3.1.16:
   version "3.1.16"

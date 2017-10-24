@@ -38,6 +38,7 @@ const ActionsColumn = styled.div`
   overflow: auto;
   color: #fffbfb;
   flex-wrap: wrap;
+  height: 100%;
 `;
 
 const ExecuteButton = styled.button`margin-top: 8px;`;
