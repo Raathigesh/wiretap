@@ -2,7 +2,7 @@
 
 # Mobx Wiretap
 
-_The dev tool your mobx and mobx-state-tree apps deserve_
+_The dev tool your mobx and mobx-state-tree app deserve_
 
 <img src="./docs/wiretap.gif" alt="Wiretap" style="margin-top: 15px">
 
