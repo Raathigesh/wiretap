@@ -96,6 +96,17 @@ log("CustomObject", {
 - [Mobx example](https://github.com/Raathigesh/wiretap/tree/master/packages/example/mobx-example)
 - [Mobx state tree example](https://github.com/Raathigesh/wiretap/tree/master/packages/example/mobx-state-tree-example)
 
+## Connect to a specific port
+Wiretap usually listens on port `4000`. If port `4000` is already occupied, wiretap would start listening on a different port. You can find the port in the sidebar.
+
+If wiretap is listening on port other than `4000`, you must provide the port when initializing.
+```javascript
+import { wiretap } from "mobx-wiretap";
+wiretap("My awesome app", {
+    port: 84585
+});
+```
+
 ## FAQ
 <details>
   <summary>How does this differ from mobx-dev-tools?</summary>

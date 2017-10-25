@@ -1,8 +1,9 @@
 import { observable, extendObservable, computed, action } from "mobx";
 import io from "socket.io-client";
 import moment from "moment";
+const { ipcRenderer } = require("electron");
 import Tracker from "./Tracker";
-const socket = io("http://localhost:4000/");
+let socket = null;
 
 class Trackers {
   constructor() {
@@ -36,41 +37,45 @@ class Trackers {
       }
     });
 
-    // events from the sync server
-    socket.on("connected", info => {
-      this.connectionInfo.port = info.port;
-    });
-    socket.on("change", tracker => {
-      this.addTracker(tracker);
-    });
-    socket.on("initialize", payload => {
-      this.reset(payload);
-    });
+    ipcRenderer.on("port", (event, port) => {
+      socket = io(`http://localhost:${port}/`);
 
-    socket.on("action", payload => {
-      const itemToUpdate = this.trackers.find(item => item.id === payload.id);
-      itemToUpdate.addActionLog(payload.value, payload.action);
-    });
+      // events from the sync server
+      socket.on("connected", info => {
+        this.connectionInfo.port = info.port;
+      });
+      socket.on("change", tracker => {
+        this.addTracker(tracker);
+      });
+      socket.on("initialize", payload => {
+        this.reset(payload);
+      });
 
-    socket.on("snapshot", payload => {
-      const itemToUpdate = this.trackers.find(item => item.id === payload.id);
-      itemToUpdate.addSnapshot(payload.value, payload.snapshot);
-    });
+      socket.on("action", payload => {
+        const itemToUpdate = this.trackers.find(item => item.id === payload.id);
+        itemToUpdate.addActionLog(payload.value, payload.action);
+      });
 
-    socket.on("patch", payload => {
-      const itemToUpdate = this.trackers.find(item => item.id === payload.id);
-      itemToUpdate.addPatch(payload.value, payload.patch);
-    });
+      socket.on("snapshot", payload => {
+        const itemToUpdate = this.trackers.find(item => item.id === payload.id);
+        itemToUpdate.addSnapshot(payload.value, payload.snapshot);
+      });
 
-    socket.on("recordingStart", ({ recordingId }) => {
-      this.isRecording = true;
-      this.currentRecordingId = recordingId;
-    });
+      socket.on("patch", payload => {
+        const itemToUpdate = this.trackers.find(item => item.id === payload.id);
+        itemToUpdate.addPatch(payload.value, payload.patch);
+      });
 
-    socket.on("recordingEnd", payload => {
-      this.isRecording = false;
-      const tracker = this.getTracker(payload.id);
-      tracker.addRecording(payload.recordingId);
+      socket.on("recordingStart", ({ recordingId }) => {
+        this.isRecording = true;
+        this.currentRecordingId = recordingId;
+      });
+
+      socket.on("recordingEnd", payload => {
+        this.isRecording = false;
+        const tracker = this.getTracker(payload.id);
+        tracker.addRecording(payload.recordingId);
+      });
     });
   }
 

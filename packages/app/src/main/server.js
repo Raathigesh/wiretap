@@ -7,7 +7,7 @@ var io = require("socket.io")(server);
 io.set("origins", "*:*");
 
 export default function initializeServer() {
-  getPort({ port: 4000 }).then(port => {
+  return getPort({ port: 4000 }).then(port => {
     console.log("Port" + port);
     io.on("connection", function(client) {
       console.log("Client connected...");
@@ -34,6 +34,8 @@ export default function initializeServer() {
     });
 
     server.listen(port);
+
+    return port;
   });
 }
 

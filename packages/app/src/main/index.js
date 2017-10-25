@@ -9,12 +9,11 @@ const isDevelopment = process.env.NODE_ENV !== "production";
 // Global reference to mainWindow
 // Necessary to prevent win from being garbage collected
 let mainWindow;
-initializeServer();
+const server = initializeServer();
 
 function createMainWindow() {
   // Construct new BrowserWindow
   const window = new BrowserWindow();
-
   // Set url for `win`
   // points to `webpack-dev-server` in development
   // points to `index.html` in production
@@ -57,6 +56,11 @@ app.on("activate", () => {
 // Create main BrowserWindow when electron is ready
 app.on("ready", () => {
   mainWindow = createMainWindow();
+  mainWindow.webContents.on("did-finish-load", () => {
+    server.then(port => {
+      mainWindow.webContents.send("port", port);
+    });
+  });
 
   const menuBuilder = new MenuBuilder(mainWindow);
   menuBuilder.buildMenu();
