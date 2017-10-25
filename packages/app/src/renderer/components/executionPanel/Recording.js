@@ -41,7 +41,7 @@ class Recording extends Component {
         {!this.state.isEdit && <RecodingLabel>{recording.name}</RecodingLabel>}
         {this.state.isEdit && (
           <RenameTextbox
-            ref={ele => (this.renameTextbox = ele)}
+            innerRef={ele => (this.renameTextbox = ele)}
             className="form-input input-sm"
             type="text"
             placeholder="Name"
