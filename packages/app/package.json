@@ -2,7 +2,7 @@
   "name": "wiretap",
   "productName": "Wiretap",
   "main": "./dist/main/index.js",
-  "version": "0.4.0",
+  "version": "0.1.0",
   "description": "Wiretap your mobx observables",
   "scripts": {
     "dev": " cross-env ELECTRON_WEBPACK_WDS_PORT=9080 electron-webpack dev",
