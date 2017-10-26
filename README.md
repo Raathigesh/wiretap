@@ -25,8 +25,8 @@ Mobx wiretap is an electron app which allows you to inspect your mobx and mobx-s
 ## Getting started
 
 ### 1) Download the app
-- [OS X]()
-- [Windows]()
+- [OS X](https://github.com/Raathigesh/wiretap/releases/download/v0.1.0/wiretap-0.1.0.dmg)
+- [Windows](https://github.com/Raathigesh/wiretap/releases/download/v0.1.0/wiretap-setup-0.1.0.exe)
 
 ### 2) Install the npm module
 ```
