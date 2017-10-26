@@ -50,7 +50,7 @@ export default function Action({
           onClick={() => {
             executeAction(
               tracker.id,
-              tracker.actions[tracker.selectedActionIndex].name,
+              action.name,
               eval(tracker.actionArguments)
             );
           }}
