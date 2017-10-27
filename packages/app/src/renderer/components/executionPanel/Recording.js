@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { observer } from "mobx-react";
 import styled from "styled-components";
 import IfYesThenFirst from "../IfYesThenFirst";
+import Textbox from '../../atoms/Textbox';
 
 const RecordingContainer = styled.div`
   display: flex;
@@ -16,9 +17,8 @@ const RecordingContainer = styled.div`
   min-height: 33px;
 `;
 
-const RecodingLabel = styled.span``;
-const RecodingButton = styled.button`margin-left: 5px;`;
-const RenameTextbox = styled.input`width: 400px;`;
+const RecordingLabel = styled.span``;
+const RecordingButton = styled.button`margin-left: 5px;`;
 class Recording extends Component {
   constructor() {
     super();
@@ -29,7 +29,6 @@ class Recording extends Component {
 
   render() {
     const {
-      trackerId,
       currentTracker,
       recording,
       playRecording,
@@ -38,28 +37,27 @@ class Recording extends Component {
     } = this.props;
     return (
       <RecordingContainer>
-        {!this.state.isEdit && <RecodingLabel>{recording.name}</RecodingLabel>}
+        {!this.state.isEdit && <RecordingLabel>{recording.name}</RecordingLabel>}
         {this.state.isEdit && (
-          <RenameTextbox
-            innerRef={ele => (this.renameTextbox = ele)}
-            className="form-input input-sm"
-            type="text"
+          <Textbox
+            style={{ width: '400px' }}
+            inputRef={ele => (this.renameTextbox = ele)}
             placeholder="Name"
             defaultValue={recording.name}
           />
         )}
         <div>
           {!this.state.isEdit && (
-            <RecodingButton
+            <RecordingButton
               className="btn btn-sm"
               onClick={() => {
-                playRecording(trackerId, recording.recordingId);
+                playRecording(currentTracker.id, recording.recordingId);
               }}
             >
               Play
-            </RecodingButton>
+            </RecordingButton>
           )}
-          <RecodingButton
+          <RecordingButton
             className="btn btn-sm"
             onClick={event => {
               if (this.state.isEdit) {
@@ -75,15 +73,15 @@ class Recording extends Component {
             }}
           >
             {this.state.isEdit ? "Save" : "Edit"}
-          </RecodingButton>
-          <RecodingButton
+          </RecordingButton>
+          <RecordingButton
             className="btn btn-sm"
             onClick={() => {
               currentTracker.removeRecording(recording.recordingId);
             }}
           >
             Delete
-          </RecodingButton>
+          </RecordingButton>
         </div>
       </RecordingContainer>
     );

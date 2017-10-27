@@ -31,6 +31,7 @@
     "mobx-react": "^4.3.3",
     "mobx-react-devtools": "^4.2.15",
     "moment": "^2.18.1",
+    "node-uuid": "^1.4.8",
     "react": "15.4.1",
     "react-ace": "^5.3.0",
     "react-dom": "15.4.1",
@@ -46,6 +47,8 @@
     "styled-components": "^2.2.0"
   },
   "devDependencies": {
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-react": "^6.24.1",
     "cross-env": "^5.0.5",
     "electron": "^1.7.8",

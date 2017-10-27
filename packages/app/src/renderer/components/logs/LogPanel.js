@@ -2,21 +2,30 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
 import { observer } from "mobx-react";
-import Log from "./Log";
+import Log from "./Log/Log";
+import LogSaved from "./Log/LogSaved";
+import Accordion from '../../atoms/Accordion';
 
 const ContentContainer = styled.div`
   display: flex;
   flex-grow: 2;
 `;
-
 const TraceContainer = styled.div`overflow: auto;`;
-
 const ClearButton = styled.button`float: right;`;
 const CardHeader = styled.div`margin-bottom: 10px;`;
+const ToggleHandler = styled.button`
+  position: absolute;
+  float: none;
+  width: calc(100% - 10px);
+  font-size: 0.5rem;
+  margin-left: 5px;
+`;
 
 class Spy extends Component {
   render() {
-    const { tracker, applySnapshot, applyPatch, clearLogs } = this.props;
+    const { tracker, trackersStore } = this.props;
+    const { savedSnapshots } = trackersStore;
+
     return (
       <ContentContainer className="card">
         <CardHeader className="card-header">
@@ -80,10 +89,11 @@ class Spy extends Component {
                   order={action.displayNumber}
                   key={index}
                   title={
-                    tracker.nodeType === 1 ? action.value.name : action.time
+                    tracker.isStateTree ? action.value.name : action.time
                   }
                   log={action}
-                  currrentTrackerId={tracker.id}
+                  tracker={tracker}
+                  trackersStore={trackersStore}
                 />
               );
             })}
@@ -97,26 +107,49 @@ class Spy extends Component {
                   key={index}
                   title={patch.value.path}
                   log={patch}
-                  applySnapshot={applyPatch}
-                  currrentTrackerId={tracker.id}
+                  tracker={tracker}
+                  trackersStore={trackersStore}
                 />
               );
             })}
         </TraceContainer>
         <TraceContainer>
+          { tracker.selectedTab === 2 &&
+            <ToggleHandler
+              className="btn btn-sm"
+              onClick={() => tracker.toggleSnapshotRecording()}
+            >
+              { !tracker.isRecordingSnapshots ?
+                'Start Recording' :
+                'Stop Recording'
+              }
+            </ToggleHandler>
+          }
           {tracker.selectedTab === 2 &&
-            tracker.logs.snapshots.map((snapshot, index) => {
-              return (
+            <div>
+              <Accordion style={{ marginTop: '30px' }}>
+              { savedSnapshots.map((snapshot, index) =>
+                <LogSaved
+                  key={index}
+                  title={snapshot.name}
+                  log={snapshot}
+                  tracker={tracker}
+                  trackersStore={trackersStore}
+                />
+              )}
+              </Accordion>
+              { tracker.logs.snapshots.map((snapshot, index) =>
                 <Log
                   order={snapshot.displayNumber}
                   key={index}
                   title={snapshot.time}
                   log={snapshot}
-                  applySnapshot={applySnapshot}
-                  currrentTrackerId={tracker.id}
+                  tracker={tracker}
+                  trackersStore={trackersStore}
                 />
-              );
-            })}
+              )}
+            </div>
+          }
         </TraceContainer>
       </ContentContainer>
     );

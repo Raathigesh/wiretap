@@ -21,7 +21,7 @@ class ExecutionPanel extends Component {
       stopRecording,
       playRecording,
       isRecording
-    } = this.props.store;
+    } = this.props.trackersStore;
 
     return (
       <Container>
@@ -30,13 +30,10 @@ class ExecutionPanel extends Component {
           actions={currentTracker.actions}
           executeAction={executeAction}
         />
-        {currentTracker.nodeType !== 2 && (
+        {currentTracker.isObservable && (
           <Recordings
             currentTracker={currentTracker}
-            trackerId={currentTracker.id}
-            nodeType={currentTracker.nodeType}
             isRecording={isRecording}
-            recordings={currentTracker.recordings}
             startRecording={startRecording}
             stopRecording={stopRecording}
             playRecording={playRecording}

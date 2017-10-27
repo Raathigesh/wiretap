@@ -34,11 +34,8 @@ const Header = styled.div`
 `;
 
 function Recordings({
-  trackerId,
   currentTracker,
-  nodeType,
   isRecording,
-  recordings,
   startRecording,
   stopRecording,
   playRecording,
@@ -48,7 +45,7 @@ function Recordings({
   let title = "It's empty over here";
   let subtitle = "Record new actions by clicking the 'Start Recoding' button";
 
-  if (nodeType !== 1) {
+  if (!currentTracker.isStateTree) {
     // mst node
     title = "Not supported";
     subtitle =
@@ -59,14 +56,14 @@ function Recordings({
     <RecordingContainer>
       <RecordingsHeader>
         <span>Recordings</span>
-        {nodeType === 1 && (
+        {currentTracker.isStateTree && (
           <button
             className="btn btn-sm"
             onClick={() => {
               if (isRecording) {
-                stopRecording(trackerId);
+                stopRecording(currentTracker.id);
               } else {
-                startRecording(trackerId);
+                startRecording(currentTracker.id);
               }
             }}
           >
@@ -78,12 +75,11 @@ function Recordings({
         )}
       </RecordingsHeader>
       <RecordingsContent>
-        {recordings.map((recording, index) => {
+        {currentTracker.recordings.map((recording, index) => {
           return (
             <Recording
               key={index}
               currentTracker={currentTracker}
-              trackerId={trackerId}
               recording={recording}
               playRecording={playRecording}
               renameRecording={renameRecording}
@@ -92,7 +88,7 @@ function Recordings({
           );
         })}
       </RecordingsContent>
-      {recordings.length === 0 && (
+      {currentTracker.recordings.length === 0 && (
         <EmptyContent title={title} subtitle={subtitle} icon="icon-apps" />
       )}
     </RecordingContainer>
