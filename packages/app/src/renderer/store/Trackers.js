@@ -17,7 +17,10 @@ class Trackers {
         snapshots: new Map()
       },
       savedSnapshots: computed(() => {
-        return this.saved.snapshots.values().reverse();
+        return this.saved.snapshots.values().filter(snapshot =>
+          snapshot.trackerName === this.currentTracker.name &&
+          snapshot.app === this.app
+        ).reverse();
       }),
       savedForCurrentTracker: computed(() => {
         const snapshots = this.savedSnapshots.filter(snapshot =>
@@ -170,10 +173,11 @@ class Trackers {
     });
   }
 
-  saveSnapshot(trackerId, snapshot) {
+  saveSnapshot(trackerName, snapshot) {
     const saved = {
       id: uuid(),
-      trackerId: trackerId,
+      trackerName: trackerName,
+      app: this.app,
       name: "Unnamed",
       value: snapshot
     };

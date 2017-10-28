@@ -47,7 +47,7 @@ function Log({ order, title, log, tracker, trackersStore }) {
           <ToggleHandler
             className="btn btn-sm"
             onClick={() => {
-              trackersStore.saveSnapshot(tracker.id, log.value);
+              trackersStore.saveSnapshot(tracker.name, log.value);
             }}
           >
             Save
