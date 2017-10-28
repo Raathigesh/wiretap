@@ -111,7 +111,7 @@ wiretap("My awesome app", {
 <details>
   <summary>How does this differ from mobx-dev-tools?</summary>
 
-Mobx-dev-tools is an awesome tool to inspect your react app and see how the UI reacts to state changes. Wiretap focues more on the state itself. You would still need mobx-dev-tools to keep an eye on the react components.
+Mobx-dev-tools is an awesome tool to inspect your react app and see how the UI reacts to state changes. Wiretap focuses more on the state itself. You would still need mobx-dev-tools to keep an eye on the react components.
 </details>
 
 ## The road ahead
