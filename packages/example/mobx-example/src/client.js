@@ -10,7 +10,9 @@ import { wiretap, inspect, log } from "mobx-wiretap";
 const initialState =
   (window.initialState && JSON.parse(window.initialState)) || {};
 
-wiretap("Todo");
+wiretap("Todo", {
+  peerId: "web"
+});
 
 var todoStore = new TodoStore();
 var viewStore = new ViewStore();

@@ -1,5 +1,6 @@
 //@ts-check
 import isString from "lodash.isstring";
+
 import { extras } from "mobx";
 import shortid from "shortid";
 import initializeWalkieTalkie, {
@@ -23,7 +24,7 @@ export function wiretap(appName, options = {}) {
   }
 
   const port = options.port ? options.port : 4000;
-  initializeWalkieTalkie(port);
+  initializeWalkieTalkie(port, options.peerId);
 
   attachHandlers({
     onUpdate: payload => {

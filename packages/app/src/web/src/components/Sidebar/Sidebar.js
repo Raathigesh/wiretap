@@ -24,7 +24,8 @@ class Sidebar extends Component {
       trackers,
       connectionInfo,
       update,
-      setCurrentTrackerId
+      setCurrentTrackerId,
+      peerId
     } = this.props.store;
 
     return (
@@ -60,7 +61,11 @@ class Sidebar extends Component {
             })}
           </Menus>
         </div>
-        <Footer connectionInfo={connectionInfo} updater={this.props.updater} />
+        <Footer
+          connectionInfo={connectionInfo}
+          updater={this.props.updater}
+          peerId={peerId}
+        />
       </SidebarContainer>
     );
   }

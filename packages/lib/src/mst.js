@@ -32,7 +32,7 @@ export function wiretap(appName, options = {}) {
   }
 
   const port = options.port ? options.port : 4000;
-  initializeWalkieTalkie(port);
+  initializeWalkieTalkie(port, options.peerId);
 
   attachHandlers({
     onExecuteAction: ({ id, name, args }) => {

@@ -19,7 +19,10 @@ import "./index.css";
 
 import { ShopStore } from "./stores/ShopStore";
 
-wiretap("Book store");
+wiretap("Book store", {
+  port: 3030,
+  peerId: "web"
+});
 
 const fetcher = url => window.fetch(url).then(response => response.json());
 const shop = ShopStore.create(

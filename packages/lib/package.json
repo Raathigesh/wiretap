@@ -1,14 +1,19 @@
 {
-  "name": "mobx-wiretap",
-  "version": "0.12.0",
+  "name": "mobx-wiretap-remote",
+  "version": "0.1.0",
   "main": "./mobx.js",
   "author": "Raathigeshan Kugarajan <raathigesh92@gmail.com>",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "mobx": "^3.3.1",
+    "mobx-state-tree": "^1.1.0",
+    "peerjs": "^0.3.14",
+    "socket.io-p2p": "^2.2.0"
+  },
   "devDependencies": {
     "lodash.isstring": "^4.0.1",
     "shortid": "^2.2.8",
-    "socket.io-client": "^2.0.3",
+    "socket.io-client": "^2.0.4",
     "webpack": "^3.8.1"
   },
   "peerDependencies": {

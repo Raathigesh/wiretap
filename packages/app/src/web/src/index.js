@@ -7,8 +7,7 @@ import Sidebar from "./components/Sidebar/Sidebar";
 import Content from "./components/Content";
 import EmptyContent from "./components/EmptyContent";
 import LogPanel from "./components/logs/LogPanel";
-import ExecutionPanel from "./components/ExecutionPanel/ExecutionPanel";
-import DevTools from "mobx-react-devtools";
+import ExecutionPanel from "./components/executionPanel/ExecutionPanel";
 import SplitPane from "react-split-pane";
 import "./styles/global.css";
 import "./styles/loader.css";
@@ -16,7 +15,6 @@ import "spectre.css/dist/spectre.min.css";
 import "spectre.css/dist/spectre-icons.css";
 import "spectre.css/dist/spectre-exp.css";
 import state from "./store/Trackers";
-import updater from "./store/Updater";
 
 const AppContainer = styled.div`
   display: flex;
@@ -41,7 +39,7 @@ class App extends Component {
 
     return (
       <AppContainer>
-        <Sidebar store={state} updater={updater} />
+        <Sidebar store={state} />
         <Wrapper>
           <MainCotent>
             {currentTracker && (
@@ -64,8 +62,8 @@ class App extends Component {
             )}
             {!currentTracker && (
               <EmptyContent
-                title="Such empty! Much space!"
-                subtitle="Click an item from the sidebar to kick things off"
+                title={state.peerId}
+                subtitle="Initialize your connection with the above ID"
               />
             )}
           </MainCotent>
@@ -79,4 +77,4 @@ class App extends Component {
 
 export default observer(App);
 
-ReactDOM.render(<App />, document.getElementById("app"));
+ReactDOM.render(<App />, document.getElementById("root"));

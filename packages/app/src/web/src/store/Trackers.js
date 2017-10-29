@@ -1,12 +1,31 @@
 import { observable, extendObservable, computed, action } from "mobx";
-import io from "socket.io-client";
 import moment from "moment";
-const { ipcRenderer } = require("electron");
 import Tracker from "./Tracker";
-let socket = null;
+import Peer from "peerjs";
+const uuidv4 = require("uuid/v4");
+const ipcRenderer = { on: () => {} };
+let connection = null;
+let socket = {
+  emit(eventName, payload) {
+    connection.send({
+      eventName,
+      payload
+    });
+  }
+};
 
 class Trackers {
   constructor() {
+    this.peerId = "web"; //uuidv4();
+    var peer = new Peer(this.peerId, {
+      host: "server-eloxnxhfvs.now.sh",
+      secure: true,
+      port: "",
+      path: "/"
+    });
+    peer.on("error", err => {
+      debugger;
+    });
     extendObservable(this, {
       connectionInfo: {
         port: null,
@@ -19,11 +38,41 @@ class Trackers {
       currentTracker: computed(() => {
         return this.trackers.find(item => item.id === this.currrentTrackerId);
       }),
+      connected(info) {
+        this.connectionInfo.port = info.port;
+      },
+      change(tracker) {
+        this.addTracker(tracker);
+      },
+      initialize(payload) {
+        this.reset(payload);
+      },
+      action(payload) {
+        const itemToUpdate = this.trackers.find(item => item.id === payload.id);
+        itemToUpdate.addActionLog(payload.value, payload.action);
+      },
+      snapshot(payload) {
+        const itemToUpdate = this.trackers.find(item => item.id === payload.id);
+        itemToUpdate.addSnapshot(payload.value, payload.snapshot);
+      },
+      patch(payload) {
+        const itemToUpdate = this.trackers.find(item => item.id === payload.id);
+        itemToUpdate.addPatch(payload.value, payload.patch);
+      },
+      recordingStart({ recordingId }) {
+        this.isRecording = true;
+        this.currentRecordingId = recordingId;
+      },
+      recordingEnd(payload) {
+        this.isRecording = false;
+        const tracker = this.getTracker(payload.id);
+        tracker.addRecording(payload.recordingId);
+      },
       setCurrentTrackerId: id => {
         this.currrentTrackerId = id;
       },
       stopRecording: trackerId => {
-        socket.emit("stopRecording", {
+        socket.emit("onStopRecording", {
           id: trackerId,
           recordingId: this.currentRecordingId
         });
@@ -33,50 +82,24 @@ class Trackers {
           payload.new_value = payload.new_value === "true";
         }
         payload.trackerId = this.currrentTrackerId;
-        socket.emit("update", payload);
+        socket.emit("onUpdate", payload);
       }
     });
 
-    ipcRenderer.on("port", (event, port) => {
-      socket = io(`http://localhost:${port}/`);
-
-      // events from the sync server
-      socket.on("connected", info => {
-        this.connectionInfo.port = info.port;
-      });
-      socket.on("change", tracker => {
-        this.addTracker(tracker);
-      });
-      socket.on("initialize", payload => {
-        this.reset(payload);
-      });
-
-      socket.on("action", payload => {
-        const itemToUpdate = this.trackers.find(item => item.id === payload.id);
-        itemToUpdate.addActionLog(payload.value, payload.action);
-      });
-
-      socket.on("snapshot", payload => {
-        const itemToUpdate = this.trackers.find(item => item.id === payload.id);
-        itemToUpdate.addSnapshot(payload.value, payload.snapshot);
-      });
-
-      socket.on("patch", payload => {
-        const itemToUpdate = this.trackers.find(item => item.id === payload.id);
-        itemToUpdate.addPatch(payload.value, payload.patch);
-      });
-
-      socket.on("recordingStart", ({ recordingId }) => {
-        this.isRecording = true;
-        this.currentRecordingId = recordingId;
-      });
-
-      socket.on("recordingEnd", payload => {
-        this.isRecording = false;
-        const tracker = this.getTracker(payload.id);
-        tracker.addRecording(payload.recordingId);
-      });
-    });
+    peer.on(
+      "connection",
+      function(conn) {
+        connection = conn;
+        conn.on(
+          "data",
+          function(data) {
+            if (data.eventName) {
+              this[data.eventName](data.payload);
+            }
+          }.bind(this)
+        );
+      }.bind(this)
+    );
   }
 
   reset(info) {
@@ -125,7 +148,7 @@ class Trackers {
   }
 
   executeAction(id, name, args) {
-    socket.emit("executeAction", {
+    socket.emit("onExecuteAction", {
       id,
       name,
       args
@@ -133,27 +156,27 @@ class Trackers {
   }
 
   applySnapshot(trackerId, snapshot) {
-    socket.emit("applySnapshot", {
+    socket.emit("onApplySnapshot", {
       trackerId,
       value: snapshot
     });
   }
 
   applyPatch(trackerId, patch) {
-    socket.emit("applyPatch", {
+    socket.emit("onApplyPatch", {
       trackerId,
       value: patch
     });
   }
 
   startRecording(trackerId) {
-    socket.emit("startRecording", {
+    socket.emit("onStartRecording", {
       id: trackerId
     });
   }
 
   playRecording(trackerId, recordingId) {
-    socket.emit("playRecording", {
+    socket.emit("onPlayRecording", {
       id: trackerId,
       recordingId
     });

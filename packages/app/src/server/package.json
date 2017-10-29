@@ -1,0 +1,12 @@
+{
+  "name": "server",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "express": "^4.16.2",
+    "peer": "^0.2.8"
+  },
+  "scripts": {
+    "start": "node ./index.js"
+  }
+}

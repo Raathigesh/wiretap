@@ -10,7 +10,7 @@ const ActionContainer = styled.div`
   margin-bottom: 2px;
   padding-left: 15px;
   margin: 5px;
-  height: 50px;
+  height: 55px;
   flex-basis: 48%;
   color: #727e96;
 `;

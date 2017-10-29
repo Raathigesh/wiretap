@@ -1,52 +1,71 @@
 import io from "socket.io-client";
+import peerWrapper, { registerHandlers } from "./peerWrapper";
+
 let socket = null;
 
-export default function initialize(port) {
-  socket = io(`http://localhost:${port}`);
+export default function initialize(port, peerId, handlers) {
+  socket = peerWrapper(peerId);
 }
+
 export function attachHandlers(handlers) {
-  handlers.onUpdate && socket.on("update", handlers.onUpdate);
-  handlers.onExecuteAction &&
-    socket.on("executeAction", handlers.onExecuteAction);
-  handlers.onApplySnapshot &&
-    socket.on("applySnapshot", handlers.onApplySnapshot);
-  handlers.onApplyPatch && socket.on("applyPatch", handlers.onApplyPatch);
-  handlers.onStartRecording &&
-    socket.on("startRecording", handlers.onStartRecording);
-  handlers.onStopRecording &&
-    socket.on("stopRecording", handlers.onStopRecording);
-  handlers.onPlayRecording &&
-    socket.on("playRecording", handlers.onPlayRecording);
+  registerHandlers(handlers);
 }
 
 export function emitChange(payload) {
-  socket.emit("change", payload);
+  socket.then(con => {
+    try {
+      con.emit("change", payload);
+    } catch (e) {
+      if (payload.action) {
+        delete payload.action;
+
+        payload.action = {
+          error: "Sorry! We could not serialize the action."
+        };
+        con.emit("change", payload);
+      }
+    }
+  });
 }
 
 export function emitInitialize(payload) {
-  socket.emit("initialize", payload);
+  socket.then(con => {
+    con.emit("initialize", payload);
+  });
 }
 
 export function emitObserve(payload) {
-  socket.emit("observe", payload);
+  socket.then(con => {
+    con.emit("observe", payload);
+  });
 }
 
 export function emitAction(payload) {
-  socket.emit("action", payload);
+  socket.then(con => {
+    con.emit("action", payload);
+  });
 }
 
 export function emitPatch(payload) {
-  socket.emit("patch", payload);
+  socket.then(con => {
+    con.emit("patch", payload);
+  });
 }
 
 export function emitSnapshot(payload) {
-  socket.emit("snapshot", payload);
+  socket.then(con => {
+    con.emit("snapshot", payload);
+  });
 }
 
 export function emitRecodingStart(payload) {
-  socket.emit("recordingStart", payload);
+  socket.then(con => {
+    con.emit("recordingStart", payload);
+  });
 }
 
 export function emitRecodingEnd(payload) {
-  socket.emit("recordingEnd", payload);
+  socket.then(con => {
+    con.emit("recordingEnd", payload);
+  });
 }
