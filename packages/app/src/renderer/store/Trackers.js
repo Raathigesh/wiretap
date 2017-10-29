@@ -1,6 +1,7 @@
 import { observable, extendObservable, computed, action } from "mobx";
 import io from "socket.io-client";
 import moment from "moment";
+import { uuid } from '../../utils/uuid';
 const { ipcRenderer } = require("electron");
 import Tracker from "./Tracker";
 let socket = null;
@@ -12,12 +13,29 @@ class Trackers {
         port: null,
         app: ""
       },
+      saved: {
+        snapshots: new Map()
+      },
+      savedSnapshots: computed(() => {
+        return this.saved.snapshots.values().filter(snapshot =>
+          snapshot.trackerName === this.currentTracker.name &&
+          snapshot.app === this.app
+        ).reverse();
+      }),
+      savedForCurrentTracker: computed(() => {
+        const snapshots = this.savedSnapshots.filter(snapshot =>
+          snapshot.trackerId === this.currentRecordingId
+        );
+        return {
+          snapshots
+        };
+      }),
       currrentTrackerId: 0,
-      trackers: [],
+      trackers: new Map(),
       isRecording: false,
       currentRecordingId: 0,
       currentTracker: computed(() => {
-        return this.trackers.find(item => item.id === this.currrentTrackerId);
+        return this.trackers.get(this.currrentTrackerId);
       }),
       setCurrentTrackerId: id => {
         this.currrentTrackerId = id;
@@ -52,18 +70,19 @@ class Trackers {
       });
 
       socket.on("action", payload => {
-        const itemToUpdate = this.trackers.find(item => item.id === payload.id);
-        itemToUpdate.addActionLog(payload.value, payload.action);
+        const tracker = this.trackers.get(payload.id);
+        tracker && tracker.addActionLog(payload.value, payload.action);
       });
 
       socket.on("snapshot", payload => {
-        const itemToUpdate = this.trackers.find(item => item.id === payload.id);
-        itemToUpdate.addSnapshot(payload.value, payload.snapshot);
+        const tracker = this.trackers.get(payload.id);
+        if (tracker && tracker.isRecordingSnapshots)
+          tracker.addSnapshot(payload.value, payload.snapshot);
       });
 
       socket.on("patch", payload => {
-        const itemToUpdate = this.trackers.find(item => item.id === payload.id);
-        itemToUpdate.addPatch(payload.value, payload.patch);
+        const tracker = this.trackers.get(payload.id);
+        tracker && tracker.addPatch(payload.value, payload.patch);
       });
 
       socket.on("recordingStart", ({ recordingId }) => {
@@ -74,26 +93,21 @@ class Trackers {
       socket.on("recordingEnd", payload => {
         this.isRecording = false;
         const tracker = this.getTracker(payload.id);
-        tracker.addRecording(payload.recordingId);
+        tracker && tracker.addRecording(payload.recordingId);
       });
     });
   }
 
   reset(info) {
-    this.trackers.clear();
+    this.trackers = new Map();
     this.connectionInfo.app = info.app;
   }
 
   addTracker(payload) {
-    let nodeType = 2;
-    if (payload.isStateTree) {
-      nodeType = 1;
-    } else if (payload.isMobx) {
-      nodeType = 0;
-    }
+    const nodeType = payload.isStateTree ? 1 : 0;
 
-    if (nodeType === 0) {
-      const mobxTracker = this.trackers.find(item => item.id === payload.id);
+    if (payload.isMobx) {
+      const mobxTracker = this.trackers.get(payload.id);
       if (mobxTracker) {
         mobxTracker.setName(payload.name);
         mobxTracker.setUpdatedTime(moment());
@@ -105,23 +119,23 @@ class Trackers {
         tracker.setUpdatedTime(moment());
         tracker.addActions(payload.actions);
         tracker.setValue(payload.value);
-        this.trackers.push(tracker);
+        this.trackers.set(tracker.id, tracker);
       }
     } else {
       const tracker = new Tracker(payload.id, payload.name, nodeType);
       tracker.setUpdatedTime(moment());
       tracker.addActions(payload.actions);
       tracker.setValue(payload.value);
-      this.trackers.push(tracker);
+      this.trackers.set(tracker.id, tracker);
     }
 
     if (this.currrentTrackerId === 0) {
-      this.currrentTrackerId = this.trackers[0].id;
+      this.currrentTrackerId = this.trackers.values()[0].id;
     }
   }
 
   getTracker(id) {
-    return this.trackers.find(tracker => tracker.id === id);
+    return this.trackers.get(id);
   }
 
   executeAction(id, name, args) {
@@ -158,6 +172,27 @@ class Trackers {
       recordingId
     });
   }
+
+  saveSnapshot(trackerName, snapshot) {
+    const saved = {
+      id: uuid(),
+      trackerName: trackerName,
+      app: this.app,
+      name: "Unnamed",
+      value: snapshot
+    };
+    this.saved.snapshots.set(saved.id, observable(saved));
+  }
+
+  renameSavedSnapshot(snapshotId, name) {
+    const snapshot = this.saved.snapshots.get(snapshotId);
+    snapshot.name = name;
+  }
+
+  removeSavedSnapshot(snapshotId) {
+    this.saved.snapshots.delete(snapshotId);
+  }
+
 }
 
 export default new Trackers();

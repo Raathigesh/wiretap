@@ -15,7 +15,7 @@ import "./styles/loader.css";
 import "spectre.css/dist/spectre.min.css";
 import "spectre.css/dist/spectre-icons.css";
 import "spectre.css/dist/spectre-exp.css";
-import state from "./store/Trackers";
+import trackersStore from "./store/Trackers";
 import updater from "./store/Updater";
 
 const AppContainer = styled.div`
@@ -23,7 +23,7 @@ const AppContainer = styled.div`
   height: 100vh;
 `;
 
-const MainCotent = styled.div`
+const MainContent = styled.div`
   display: flex;
   flex-grow: 1;
   position: relative;
@@ -37,13 +37,16 @@ const Wrapper = styled.div`
 
 class App extends Component {
   render() {
-    const { currentTracker, update, applySnapshot, applyPatch } = state;
+    const {
+      currentTracker,
+      update,
+    } = trackersStore;
 
     return (
       <AppContainer>
-        <Sidebar store={state} updater={updater} />
+        <Sidebar trackersStore={trackersStore} updater={updater} />
         <Wrapper>
-          <MainCotent>
+          <MainContent>
             {currentTracker && (
               <SplitPane
                 split="vertical"
@@ -54,11 +57,7 @@ class App extends Component {
               >
                 <Content currentTracker={currentTracker} update={update} />
                 {currentTracker && (
-                  <LogPanel
-                    tracker={currentTracker}
-                    applySnapshot={applySnapshot}
-                    applyPatch={applyPatch}
-                  />
+                  <LogPanel trackersStore={trackersStore} tracker={currentTracker} />
                 )}
               </SplitPane>
             )}
@@ -68,9 +67,9 @@ class App extends Component {
                 subtitle="Click an item from the sidebar to kick things off"
               />
             )}
-          </MainCotent>
+          </MainContent>
           {currentTracker &&
-            currentTracker.nodeType !== 2 && <ExecutionPanel store={state} />}
+            currentTracker.isObservable && <ExecutionPanel trackersStore={trackersStore} />}
         </Wrapper>
       </AppContainer>
     );

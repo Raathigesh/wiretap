@@ -14,7 +14,7 @@ const ContentContainer = styled.div`
   height: 100%;
 `;
 
-function Content({ currentTracker, spyTrace, children, update }) {
+function Content({ currentTracker, children, update }) {
   const isValueAString = currentTracker && isString(currentTracker.value);
   return (
     <ContentContainer className="card">
@@ -33,7 +33,7 @@ function Content({ currentTracker, spyTrace, children, update }) {
             update={payload => {
               update(payload);
             }}
-            isEditable={currentTracker.nodeType === 0}
+            isEditable={currentTracker.isMobx}
           />
         )}
       </div>

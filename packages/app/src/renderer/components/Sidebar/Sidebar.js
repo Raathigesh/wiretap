@@ -25,7 +25,7 @@ class Sidebar extends Component {
       connectionInfo,
       update,
       setCurrentTrackerId
-    } = this.props.store;
+    } = this.props.trackersStore;
 
     return (
       <SidebarContainer className="panel">
@@ -42,7 +42,7 @@ class Sidebar extends Component {
         </div>
         <div className="panel-body">
           <Menus className="menu">
-            {trackers.map((tracker, index) => {
+            {trackers.values().map((tracker, index) => {
               const isActive = tracker.id === currrentTrackerId;
               return (
                 <li
