@@ -114,7 +114,7 @@ App: https://wiretap.debuggable.io/live/
 
 ### Initialize with the peer id
 All you have to do is install `mobx-wiretap-remote` and initialize your connection with the ID presented to you on https://wiretap.debuggable.io/live/
-```
+```javascript
 import { wiretap } from "mobx-wiretap-remote";
 wiretap("My awesome app", {
     peerId: "<ID From https://wiretap.debuggable.io/live/>"
