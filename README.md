@@ -9,6 +9,8 @@ _The dev tool your mobx and mobx-state-tree app deserve_
 ## What's Mobx Wiretap?
 Mobx wiretap is an electron app which allows you to inspect your mobx and mobx-state-tree states during **development** time. This makes debugging easy and fun.
 
+[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/mobx-wiretap/Lobby)
+
 ## Features
 - Mobx
   - Live inspection of observable state
