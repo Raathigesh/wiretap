@@ -107,6 +107,20 @@ wiretap("My awesome app", {
 });
 ```
 
+## Mobx Wiretap Live (Experimental)
+Mobx Wiretap Live is the same inspector but as a hosted app.
+
+App: https://wiretap.debuggable.io/live/
+
+### Initialize with the peer id
+All you have to do is install `mobx-wiretap-remote` and initialize your connection with the ID presented to you on https://wiretap.debuggable.io/live/
+```
+import { wiretap } from "mobx-wiretap-remote";
+wiretap("My awesome app", {
+    peerId: "<ID From https://wiretap.debuggable.io/live/>"
+});
+```
+**But if you are worried about sending your data to an unknown service, not to worry, your app data is NOT sent to a centralized server. Instead the app uses WebRTC - peer to peer connection and sends the data directly to the peer. So your app is a peer and the inspector tab is another peer.**
 ## FAQ
 <details>
   <summary>How does this differ from mobx-dev-tools?</summary>
