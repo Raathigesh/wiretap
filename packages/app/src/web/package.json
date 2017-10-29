@@ -2,6 +2,7 @@
   "name": "web",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://wiretap.debuggable.io/live",
   "dependencies": {
     "brace": "^0.10.0",
     "classnames": "^2.2.5",

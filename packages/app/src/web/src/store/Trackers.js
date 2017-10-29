@@ -16,7 +16,7 @@ let socket = {
 
 class Trackers {
   constructor() {
-    this.peerId = "web"; //uuidv4();
+    this.peerId = uuidv4();
     var peer = new Peer(this.peerId, {
       host: "server-eloxnxhfvs.now.sh",
       secure: true,

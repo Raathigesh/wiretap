@@ -56,7 +56,7 @@
     "mobx": "^3.1.16",
     "mobx-react": "^4.2.2",
     "mobx-react-devtools": "^4.2.15",
-    "mobx-wiretap": "^0.12.0",
+    "mobx-wiretap-remote": "^0.3.0",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",

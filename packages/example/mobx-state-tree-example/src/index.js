@@ -11,7 +11,7 @@ import {
   applyPatch,
   getSnapshot
 } from "mobx-state-tree";
-import { wiretap, inspect, log } from "mobx-wiretap/mst";
+import { wiretap, inspect, log } from "mobx-wiretap-remote/mst";
 
 import createRouter from "./utils/router";
 import App from "./components/App";
@@ -20,8 +20,7 @@ import "./index.css";
 import { ShopStore } from "./stores/ShopStore";
 
 wiretap("Book store", {
-  port: 3030,
-  peerId: "web"
+  peerId: "ceb56df2-be30-4243-ac6f-02e14efee6bc"
 });
 
 const fetcher = url => window.fetch(url).then(response => response.json());
