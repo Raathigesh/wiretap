@@ -32,7 +32,8 @@ export function wiretap(appName, options = {}) {
   }
 
   const port = options.port ? options.port : 4000;
-  initializeWalkieTalkie(port);
+  const host = options.host ? options.host : "http://localhost";
+  initializeWalkieTalkie(host, port);
 
   attachHandlers({
     onExecuteAction: ({ id, name, args }) => {
@@ -61,13 +62,13 @@ export function wiretap(appName, options = {}) {
   });
 }
 
-export function inspect(name, thingToTrack) {
+export function inspect(name, thingToTrack, actions) {
   if (!isString(name)) {
     throw new Error("First parameter should be a string.");
   }
 
   if (isStateTreeNode(thingToTrack)) {
-    inspectMst(name, thingToTrack);
+    inspectMst(name, thingToTrack, actions);
   } else {
     throw new Error("This is not a MST node.");
   }

@@ -83,6 +83,12 @@ const todo = Todo.create({
 inspect("Todo", todo);
 ```
 
+Sometimes wiretap would not be able to auto-detect the actions from the mst observable you are tracking. In that case, you would be able to pass the action names as the third parameter as follows.
+
+```javascript
+inspect("Todo", todo, ['addTodo']);
+```
+
 ### 5) Inspecting plain object with log()
 ```javascript
 import { wiretap, log } from "mobx-wiretap";
@@ -98,13 +104,14 @@ log("CustomObject", {
 - [Mobx example](https://github.com/Raathigesh/wiretap/tree/master/packages/example/mobx-example)
 - [Mobx state tree example](https://github.com/Raathigesh/wiretap/tree/master/packages/example/mobx-state-tree-example)
 
-## Connect to a specific port
+## Connect to a specific port or a host
 Wiretap usually listens on port `4000`. If port `4000` is already occupied, wiretap would start listening on a different port. You can find the port in the sidebar.
 
-If wiretap is listening on port other than `4000`, you must provide the port when initializing.
+If wiretap is listening on port other than `4000`, you must provide the port when initializing. You could also provide a host.
 ```javascript
 import { wiretap } from "mobx-wiretap";
 wiretap("My awesome app", {
+    host: 'http://localhost'.
     port: 84585
 });
 ```

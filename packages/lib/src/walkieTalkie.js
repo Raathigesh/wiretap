@@ -1,8 +1,8 @@
 import io from "socket.io-client";
 let socket = null;
 
-export default function initialize(port) {
-  socket = io(`http://localhost:${port}`);
+export default function initialize(host, port) {
+  socket = io(`${host}:${port}`);
 }
 export function attachHandlers(handlers) {
   handlers.onUpdate && socket.on("update", handlers.onUpdate);

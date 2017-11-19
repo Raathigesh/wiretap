@@ -23,7 +23,8 @@ export function wiretap(appName, options = {}) {
   }
 
   const port = options.port ? options.port : 4000;
-  initializeWalkieTalkie(port);
+  const host = options.host ? options.host : "http://localhost";
+  initializeWalkieTalkie(host, port);
 
   attachHandlers({
     onUpdate: payload => {

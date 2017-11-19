@@ -17,9 +17,9 @@ import {
 } from "mobx-state-tree";
 import { isAction } from "mobx";
 
-export function inspect(name, thingToTrack) {
+export function inspect(name, thingToTrack, providedActions) {
   const id = globalState.addObservable(thingToTrack);
-  const actions = getActions(thingToTrack);
+  const actions = providedActions || getActions(thingToTrack);
 
   emitChange({
     id,
