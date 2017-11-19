@@ -1,7 +1,7 @@
 import { observable, extendObservable, computed, action } from "mobx";
 import io from "socket.io-client";
 import moment from "moment";
-import { uuid } from '../../utils/uuid';
+import { uuid } from "../../utils/uuid";
 const { ipcRenderer } = require("electron");
 import Tracker from "./Tracker";
 let socket = null;
@@ -17,14 +17,18 @@ class Trackers {
         snapshots: new Map()
       },
       savedSnapshots: computed(() => {
-        return this.saved.snapshots.values().filter(snapshot =>
-          snapshot.trackerName === this.currentTracker.name &&
-          snapshot.app === this.app
-        ).reverse();
+        return this.saved.snapshots
+          .values()
+          .filter(
+            snapshot =>
+              snapshot.trackerName === this.currentTracker.name &&
+              snapshot.app === this.app
+          )
+          .reverse();
       }),
       savedForCurrentTracker: computed(() => {
-        const snapshots = this.savedSnapshots.filter(snapshot =>
-          snapshot.trackerId === this.currentRecordingId
+        const snapshots = this.savedSnapshots.filter(
+          snapshot => snapshot.trackerId === this.currentRecordingId
         );
         return {
           snapshots
@@ -192,7 +196,6 @@ class Trackers {
   removeSavedSnapshot(snapshotId) {
     this.saved.snapshots.delete(snapshotId);
   }
-
 }
 
 export default new Trackers();

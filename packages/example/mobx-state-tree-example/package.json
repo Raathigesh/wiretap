@@ -11,7 +11,7 @@
     "mobx-react-devtools": "^4.2.11",
     "mobx-state-tree": "^0.10.1",
     "mobx-utils": "^2.0.1",
-    "mobx-wiretap": "^0.12.0",
+    "mobx-wiretap": "^0.13.0",
     "path-match": "^1.2.4",
     "react": "^15.5.0",
     "react-dom": "^15.5.0",
