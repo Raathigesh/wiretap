@@ -2,7 +2,7 @@
   "name": "wiretap",
   "productName": "Wiretap",
   "main": "./dist/main/index.js",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Wiretap your mobx observables",
   "scripts": {
     "dev": " cross-env ELECTRON_WEBPACK_WDS_PORT=9080 electron-webpack dev",
@@ -24,7 +24,7 @@
     "brace": "^0.10.0",
     "classnames": "^2.2.5",
     "electron-log": "^2.2.9",
-    "electron-updater": "^2.10.1",
+    "electron-updater": "^2.16.1",
     "express": "^4.16.1",
     "get-port": "^3.2.0",
     "lodash.isstring": "^4.0.1",
@@ -45,7 +45,8 @@
     "socket.io-client": "^2.0.3",
     "source-map-support": "^0.5.0",
     "spectre.css": "^0.4.3",
-    "styled-components": "^2.2.0"
+    "styled-components": "^2.2.0",
+    "webpack-sources": "=1.0.1"
   },
   "devDependencies": {
     "babel-plugin-transform-class-properties": "^6.24.1",
@@ -72,7 +73,7 @@
       {
         "provider": "github",
         "owner": "Raathigesh",
-        "repo": "wiretap-release-test"
+        "repo": "wiretap"
       }
     ]
   }
