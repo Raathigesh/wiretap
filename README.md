@@ -111,7 +111,7 @@ If wiretap is listening on port other than `4000`, you must provide the port whe
 ```javascript
 import { wiretap } from "mobx-wiretap";
 wiretap("My awesome app", {
-    host: 'http://localhost'.
+    host: 'http://localhost',
     port: 84585
 });
 ```
