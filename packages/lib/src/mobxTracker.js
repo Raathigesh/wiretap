@@ -100,7 +100,10 @@ function handleObservableObject(id, name, observableObject, thingToEmit) {
   const mobxActions = Object.getOwnPropertyNames(
     Object.getPrototypeOf(observableObject)
   ).filter(property => {
-    return observableObject[property].isMobxAction;
+    if (observableObject[property]) {
+      return observableObject[property].isMobxAction;
+    }
+    return false;
   });
 
   Object.getOwnPropertyNames(observableObject)
