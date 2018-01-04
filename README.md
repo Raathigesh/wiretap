@@ -159,6 +159,4 @@ Thanks [Alex Bergin](https://codepen.io/abergin/pen/XpwRpE)  for the awesome loa
 ## License
 MIT © [Raathigeshan](https://twitter.com/Raathigeshan)
 
-<a target='_blank' rel='nofollow' href='https://app.codesponsor.io/link/2VtFmV65B5vo13VnsCfGqKU8/Raathigesh/wiretap'>
-  <img alt='Sponsor' width='888' height='68' src='https://app.codesponsor.io/embed/2VtFmV65B5vo13VnsCfGqKU8/Raathigesh/wiretap.svg' />
-</a>
+
